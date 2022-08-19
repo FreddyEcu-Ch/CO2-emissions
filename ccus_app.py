@@ -20,6 +20,7 @@ options = st.sidebar.radio(
 if options == "Home":
     st.header("""-**Objectives:** App for view the ccus potential: """)
     st.header("""-**Methodology:**""")
+    st.header("""-**Results**""")
     # Load image
     image = Image.open("resources/ccs.jpg")
     st.image(image)
