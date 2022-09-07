@@ -107,7 +107,6 @@ if options == "Refineries data":
     ax.bar(df['año'], df['RefinacionBarriles'], color='navy')
     ax.set_xlabel('Year', fontsize=14)
     ax.set_ylabel('Oil refined (MMbbl)', fontsize=14)
-    # ax.set_xticks(ax.get_xticks())
     ax.set_title('Oil refined of the refinery Sushufindi',
                  fontname="Times New Roman", size=20, fontweight="bold")
     plt.xticks([2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020])
@@ -140,9 +139,6 @@ if options == "Refineries data":
     emi = df.plot.bar(x='año', y='Emisiones_CO2', width=0.4, color='brown',
                       ax=ax2, align='center', label=r'$CO_{2}$ emissions', position=0)
 
-    # ax1.bar(df['año'], df['RefinacionBarriles'], color='blue', label='Oil refined')
-    # ax2 = ax1.twinx()
-    # ax2.bar(df['año'], df['Emisiones_CO2'], color='orange', label='CO2 emissions')
     ax1.set_xlabel('', fontsize=14)
     ax1.set_ylabel('Oil refined (bbl)', fontsize=16)
     ax2.set_ylabel(r'$CO_{2}$ emissions (Ton)', fontsize=16)
@@ -157,7 +153,6 @@ if options == "Refineries data":
     ax2.grid(visible=False)
     ax1.tick_params(axis='x', labelrotation=0)
     ax1.set_ylim(0, 10E6)
-    # plt.title(r'Oil refined and $CO_{2}$ emissions of the refinery Sushufindi', fontname="Times New Roman", size=20,fontweight="bold")
     st.pyplot(fig3)
 
 elif options == "Thermal plants data":
@@ -236,6 +231,7 @@ elif options == "Thermal plants data":
     ter_se = ter[ter['Termoelectrica'] == 'Secoya'].sort_values(by='año')
     ter_se
 
+    #GRAFICO DE BARRAS DE LA PRODUCCION DE ENERGIA EN LA PLANTA TERMICA SECOYA
     fig8, ax = plt.subplots(figsize=(12, 8))
 
     ax.bar(ter_se['año'], ter_se['EnergiaBruta(MWH)'], color='seagreen')
@@ -245,6 +241,7 @@ elif options == "Thermal plants data":
                  fontname="Times New Roman", size=20, fontweight="bold")
     st.pyplot(fig8)
 
+    #GRAFICO DE BARRA DE LAS EMISIONES DE CO2 EN LA PLANTA TERMICA SECOYA
     fig9, ax = plt.subplots(figsize=(12, 8))
 
     ax.bar(ter_se['año'], ter_se['EmisionCO2[Ton]'], color='red')
@@ -254,6 +251,7 @@ elif options == "Thermal plants data":
                  fontname="Times New Roman", size=20, fontweight="bold")
     st.pyplot(fig9)
 
+    #COMPARATIVA DE LA PRODUCCION DE ENERGIA Y LAS EMISIONES DE CO2 EN LA PLANTA TERMICA SECOYA
     formatter = ticker.EngFormatter()
     fig10 = plt.figure(figsize=(12, 8), edgecolor='black')
     ax1 = fig10.add_subplot()
@@ -276,11 +274,58 @@ elif options == "Thermal plants data":
     ax2.set_ylim(0, 200E3)
     ax1.legend(loc='upper center', fontsize=12)
     ax2.legend(loc='upper right', fontsize=12)
-    # plt.title(r'Energy production and $CO_{2}$ emissions of the thermal plant Secoya',
-    #          fontname="Times New Roman", size=20, fontweight="bold")
     ax1.tick_params(axis='x', labelrotation=0)
     ax2.grid(visible=False)
     st.pyplot(fig10)
+
+    #PROMEDIO
+    terP = pd.read_sql_query("SELECT* FROM Termoelectricas_datos_promedio", engine)
+    terP
+
+    fig11, ax = plt.subplots(figsize=(12, 8))
+
+    ax.bar(terP['Termoeléctrica'], terP['EnergiaBruta_MWH'], color='blue')
+    ax.set_xlabel('Thermal plants', fontsize=14)
+    ax.set_ylabel('Net energy (MWH)', fontsize=14)
+    plt.xticks(rotation=45)
+    ax.set_title('Average energy production (2016-2020) of thermal plants located in the amazon region of Ecuador',
+                 fontname="Times New Roman", size=20, fontweight="bold")
+    st.pyplot(fig11)
+
+    fig12, ax = plt.subplots(figsize=(12, 8))
+
+    ax.bar(terP['Termoeléctrica'], terP['Emision_TCO2'], color='red')
+    ax.set_xlabel('Thermal plants', fontsize=14)
+    ax.set_ylabel(r'$CO_{2}$ emissions (Ton)', fontsize=14)
+    plt.xticks(rotation=45)
+    ax.set_title(r'Average $CO_{2}$ emissions (2016-2020) of thermal plants located in the amazon region of Ecuador',
+                 fontname="Times New Roman", size=20, fontweight="bold")
+    st.pyplot(fig12)
+
+    formatter = ticker.EngFormatter()
+    fig13 = plt.figure(figsize=(15, 11), edgecolor='black')
+    ax1 = fig13.add_subplot()
+    ax2 = ax1.twinx()
+
+    ener = terP.plot.bar(x='Termoeléctrica', y='EnergiaBruta_MWH', width=0.4, color='blue',
+                         ax=ax1, align='center', label='Net energy', position=1)
+    emi = terP.plot.bar(x='Termoeléctrica', y='Emision_TCO2', width=0.4, color='red',
+                        ax=ax2, align='center', label=r'$CO_{2}$ emissions', position=0)
+
+    ax1.set_xlabel('', fontsize=14)
+    ax1.set_ylabel('Net energy (MWH)', fontsize=16)
+    ax2.set_ylabel(r'$CO_{2}$ emissions (Ton)', fontsize=16)
+    ax1.tick_params(axis='x', labelrotation=45, labelsize=14)
+    ax1.tick_params(axis='y', labelsize=14)
+    ax2.tick_params(axis='y', labelsize=14)
+    ax1.yaxis.set_major_formatter(formatter)
+    ax2.yaxis.set_major_formatter(formatter)
+    ax1.set_ylim(0, 200E3)
+    ax2.set_ylim(0, 200E3)
+    ax1.legend(loc='upper center', fontsize=12)
+    ax2.legend(loc='upper right', fontsize=12)
+    ax2.grid(visible=False)
+    st.pyplot(fig13)
 
 
 
