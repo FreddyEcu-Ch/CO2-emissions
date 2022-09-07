@@ -9,6 +9,7 @@ import seaborn as sns
 from sqlalchemy import create_engine
 #from pandas_profiling import ProfileReport
 from matplotlib import ticker
+from matplotlib.ticker import AutoMinorLocator
 #sns.set_style('white')
 
 # from streamlit_option_menu import option_menu
@@ -78,6 +79,8 @@ if options == "Refineries data":
     df = pd.read_sql_query("SELECT* FROM R_Shushufindi", engine)
     df
 
+    st.header("Representación mediante gráfico de barras de la Refinación de Barriles")
+
     fig1, ax = plt.subplots(figsize=(14, 8))
 
     ax.bar(df['año'], df['RefinacionBarriles'], color='navy')
@@ -89,16 +92,51 @@ if options == "Refineries data":
     plt.xticks([2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020])
     plt.show()
 
-    fig2 = plt.subplots(figsize=(12, 8))
-    ax = sns.lineplot(data=df, x='año', y='RefinacionBarriles', color='navy')
+    st.header("Representación mediante gráfico de barras de las Emisiones de CO2.")
+
+    fig3, ax = plt.subplots(figsize=(12, 8))
+
+    ax.bar(df['año'], df['Emisiones_CO2'], color='brown')
     ax.set_xlabel('Year', fontsize=14)
-    ax.set_ylabel('Oil refined (MMbbl)', fontsize=14)
-    ax.fill_between(df.año, df.RefinacionBarriles, alpha=0.1, color='navy')
-    ax.set_xlim(df.año.min(), df.año.max())
-    ax.set_ylim(0)
-    plt.xticks([2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020])
-    ax.set_title('Oil refined of the refinery Sushufindi',
+    ax.set_ylabel(r'$CO_{2}$ emissions (Ton)', fontsize=14)
+    ax.set_title(r'$CO_{2}$ emissions of the refinery Sushufindi',
                  fontname="Times New Roman", size=20, fontweight="bold")
+    plt.xticks([2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020])
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
     plt.show()
+
+    st.header("Comparativa de la Refinación de Barriles y las Emisiones de CO2 que provocan.")
+
+    formatter = ticker.EngFormatter()
+    fig5 = plt.figure(figsize=(12, 8), edgecolor='black')
+    ax1 = fig5.add_subplot()
+    ax2 = ax1.twinx()
+
+    ener = df.plot.bar(x='año', y='RefinacionBarriles', width=0.4, color='navy',
+                       ax=ax1, align='center', label='Oil refined', position=1)
+    emi = df.plot.bar(x='año', y='Emisiones_CO2', width=0.4, color='brown',
+                      ax=ax2, align='center', label=r'$CO_{2}$ emissions', position=0)
+
+    # ax1.bar(df['año'], df['RefinacionBarriles'], color='blue', label='Oil refined')
+    # ax2 = ax1.twinx()
+    # ax2.bar(df['año'], df['Emisiones_CO2'], color='orange', label='CO2 emissions')
+    ax1.set_xlabel('', fontsize=14)
+    ax1.set_ylabel('Oil refined (bbl)', fontsize=16)
+    ax2.set_ylabel(r'$CO_{2}$ emissions (Ton)', fontsize=16)
+    ax1.tick_params(axis='x', labelsize=14)
+    ax1.tick_params(axis='y', labelsize=14)
+    ax2.tick_params(axis='y', labelsize=14)
+    ax1.yaxis.set_major_formatter(formatter)
+    ax2.yaxis.set_major_formatter(formatter)
+    ax2.set_ylim(0, 250E3)
+    ax1.legend(loc='upper center', fontsize=12)
+    ax2.legend(loc='upper right', fontsize=12)
+    ax2.grid(visible=False)
+    ax1.tick_params(axis='x', labelrotation=0)
+    ax1.set_ylim(0, 10E6)
+    # plt.title(r'Oil refined and $CO_{2}$ emissions of the refinery Sushufindi', fontname="Times New Roman", size=20,fontweight="bold")
+    plt.show()
+
+
 
 
