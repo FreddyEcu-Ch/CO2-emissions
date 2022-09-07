@@ -71,10 +71,11 @@ if options == "Home":
     st.caption("*CCUS Framework*")
 
 if options == "Refineries data":
+
     st.header("Shushufindi Refinerie ")
     st.markdown("La Refinería Shushufindi abastece de gasolina y diésel a las provincias de Sucumbíos, Orellana y Napo, y de GLP a la ciudad de Quito y su zona de influencia. La capacidad de procesamiento de la Refinería Shushufindi, es de 20 mil barriles de crudo por día.")
     st.markdown("A continuación se presenta una base de datos recopilada de entidades gubernamentales sobre las emisiones de CO2 consecuencia de las actividades de procesamiento de cruso que se maneja dentro de esta fuente de emision estacionaria.")
-    engine = create_engine('sqlite:///CO2_EOR.db')
+    engine = create_engine('sqlite:///Refineries/CO2_EOR.db')
 
     df = pd.read_sql_query("SELECT* FROM R_Shushufindi", engine)
     df
@@ -90,7 +91,7 @@ if options == "Refineries data":
     ax.set_title('Oil refined of the refinery Sushufindi',
                  fontname="Times New Roman", size=20, fontweight="bold")
     plt.xticks([2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020])
-    plt.show()
+    st.pyplot(fig1)
 
     st.header("Representación mediante gráfico de barras de las Emisiones de CO2.")
 
@@ -103,7 +104,7 @@ if options == "Refineries data":
                  fontname="Times New Roman", size=20, fontweight="bold")
     plt.xticks([2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020])
     ax.yaxis.set_minor_locator(AutoMinorLocator())
-    plt.show()
+    st.pyplot(fig3)
 
     st.header("Comparativa de la Refinación de Barriles y las Emisiones de CO2 que provocan.")
 
@@ -135,8 +136,6 @@ if options == "Refineries data":
     ax1.tick_params(axis='x', labelrotation=0)
     ax1.set_ylim(0, 10E6)
     # plt.title(r'Oil refined and $CO_{2}$ emissions of the refinery Sushufindi', fontname="Times New Roman", size=20,fontweight="bold")
-    plt.show()
+    st.pyplot(fig5)
 
-
-
-
+elif options == "Thermal plants data":
