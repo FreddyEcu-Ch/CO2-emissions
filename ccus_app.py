@@ -28,7 +28,7 @@ st.title("CO2 Emissions App")
 #MENU DE OPCIONES PRINCIPAL
 
 with st.sidebar:
-    options = option_menu(menu_title="main menu",options=["Home", "Refineries data", "Thermal plants data", "Surface Facilities"],icons=["house","clipboard-data","tv","calculator"])
+    options = option_menu(menu_title="main menu",options=["Home", "Refineries data", "Thermal plants data", "Surface Facilities"],icons=["house","bar-chart","tv","calculator"])
 
 #OPCION HOME
 if options == "Home":
