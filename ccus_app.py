@@ -31,7 +31,7 @@ st.title("CO2 Emissions App")
 
 with st.sidebar:
     options = option_menu(
-        menu_title="main menu",
+        menu_title="Main menu",
         options=[
             "Home",
             "Refineries data",
@@ -61,86 +61,108 @@ if options == "Home":
           su papel en el cambio climático. El plan CCUS consta de cuatro fases: recolección, transporte, almacenamiento
            y uso. """
     )
+    st.markdown(
+        """En el **Video 1** podemos observar la cadena de valor de CCUS"""
+    )
     # Load video
     video = open("resources/ccus.mp4", "rb")
     st.video(video)
-    st.caption("*CCUS Value Chain.*")
+    st.caption("*Video 1. CCUS Value Chain.*")
 
     # OBJETIVO GENERAL
-    st.header("""-**Objetivo General:** """)
+    st.header("""**Objetivo:** """)
     st.markdown(
-        "Recopilación de información de emisiones de CO2 de facilidades petroleras utilizando información de fuentes gubernamentales, para diseño de un aplicativo web que permita visualizar las tendencias de emisiones de estas fuentes estacionarias con la finalidad de evaluar la factibilidad del uso de estas emisiones en un proyecto CCUS."
-    )
+        """Diseño de aplicativo web con información de emisiones de CO2 de fuentes estacionarias, con la finalidad de 
+        cuantificar estas emisiones para el desarrollo de proyectos CCUS y al mismo tiempo proponer procesos 
+        alternativos que nos puedan dar un soporte en la toma de decisiones a nivel de producción y emisiones de gases
+         de efecto invernadero.""")
 
-    # OBJETIVOS ESPECIFICOS
-    st.header("-Objetivos Específicos")
-    st.markdown(
-        "Identificar los distintos factores de emisión que se pueden hallar dentro de las facilidades petroleras."
-    )
-    st.markdown(
-        "Determinar y utilizar el lenguaje de programación que mejor se acomode para la presentación de los datos de las emisiones de CO2."
-    )
 
-    # METODOLOGIA
-    st.header("""-**Metodología:**""")
+    # DESCRIPCION DE LOS TIPOS DE EMISIONES
+    st.header("""**Tipos de Emisiones:**""")
     st.markdown(
-        "Con la ayuda de entidades gubernamentales y a una previa investigación se hallarán los datos de las emisiones de CO2 dentro de las facilidades petroleras de los campos destinados a investigar, y mostrarlos de forma preliminar en tablas tabuladas para posteriormente ser cargada al aplicativo web. "
+        """**Emisiones por venteo** son liberadas a la atmósfera, estas pueden ser liberadas intencionalmente, en
+        procesos o actividades que están diseñados para ventear gas, o de forma no intencionada, en caso de fallos o
+        por un mal funcionamiento de los equipos."""
     )
     st.markdown(
-        "Emisiones por Venteo: son emisiones de gases de efecto invernadero liberados a la atmósfera. Estos gases pueden ser liberado intencionadamente, en procesos o actividades que están diseñados para ventear gas, o de forma no intencionada, en caso de fallos o por un mal funcionamiento de los equipos. Entre los equipos que pueden liberar estas emisiones tenemos:"
+        """Entre las actividades que se producen estas emisiones por venteo tenemos:""" )
+    st.markdown(
+        """-En la etapa de completacion de un pozo."""
     )
     st.markdown(
-        "•Tanques	de	almacenamiento	de	líquidos	producidos,	como condensado, petróleo crudo."
+        """-En las descargas de líquidos en los pozos de gas"""
     )
-    st.markdown("•Compresores.")
-    st.markdown("•	Deshidratadores de glicol.")
-    st.markdown("•	Cabezal de pozo.")
-    st.markdown("Entre las actividades que liberan emisiones de venteo tenemos:")
-    st.markdown("•	Terminaciones de pozo.")
-    st.markdown("•	Extracción de líquidos en pozos de gas.")
     st.markdown(
-        "Las emisiones de gases de efecto invernadero se cuantifican y expresan como un caudal, masa por unidad de tiempo, y puede ser estimado mediante cálculos de ingeniería, por medición directa de las fuentes de emisión, o mediante el uso de modelos. Las emisiones de venteo se cuantifican en base a los métodos siguientes, enumerados a continuación en orden creciente de precisión y fiabilidad.(Change, n.d.)"
+        """Una de las principales fuentes de venteo podemos verlos en la **Imagen 1**, donde se observa los tanques de 
+        almacenamiento de líquidos producidos como condensado, petróleo crudo o agua. Los tanques pueden tener emisiones
+        relacionadas con el "flash" que se produce con la expansión del líquido al llegar al tanque desde otros
+        recipientes. Lo más frecuente, es que los tanques estén próximos a la presión atmósferica, pero los recipientes
+        de los que proviene el líquido están a mayor presión. El gas se libera cuando se abre la compuerta del tanque
+        habilitada para la medición de nivel o cuando se carga en el camión. El gas se libera desde el tanque como
+        consecuencia del arrastre de una corriente de gas enviada de forma no intencionada desde el sistema aguas 
+        arriba."""
     )
     image_venteo = Image.open("resources/emisiones_venteo.jpg")
     st.image(image_venteo)
     st.caption(
-        "*Pueden existir emisiones por vento en distintas partes en las facilidades de superficie.*"
+        "*Imagen 1. Tanques de almacenamiento.*"
     )
     st.markdown(
-        "Emisiones por Quemado: Para evitar riesgos, el gas amargo rechazado es enviado a quemadores  elevados tipo antorcha. Como resultado de la combustión del gas amargo, además de CO2 y agua, se emite bióxido de azufre (SO2), óxidos de nitrógeno (NOx), partículas suspendidas (PS), monóxido de carbono (CO), compuestos orgánicos no quemados y H2S no oxidado. Estimados recientes (Villasenor et al., 2003), indican que cerca del 82% del total de contaminantes emitidos a la atmósfera proviene de estas operaciones de quemado de gas. Para la estimación de las emisiones de CO2 se trabaja con la fórmula de emisiones del IPCC ya que no se obtienes muchas medidas directas en estas emisiones."
+        """**Emisiones por Quemado:** Para evitar riesgos, el gas amargo rechazado es enviado a quemadores  elevados 
+        tipo "antorcha" como se observa en la **Imagen 2**. Como resultado de la combustión del gas amargo, además de 
+        CO2 y agua, se emite bióxido de azufre (SO2), óxidos de nitrógeno (NOx), partículas suspendidas (PS), monóxido 
+        de carbono (CO), compuestos orgánicos no quemados y H2S no oxidado. Estimados recientes 
+        (Villasenor et al., 2003), indican que cerca del 82% del total de contaminantes emitidos a la atmósfera proviene 
+        de estas operaciones de quemado de gas. Para la estimación de las emisiones de CO2 se trabaja con la fórmula de 
+        emisiones del IPCC ya que no se obtienes muchas medidas directas en estas emisiones."""
     )
     image_quemado = Image.open("resources/emisiones_quemado.jpg")
     st.image(image_quemado)
     st.caption(
-        "*Actividad en la industria petrolera que provoca emisiones por quemado.*"
+        "*Imagen 2. Actividad en la industria petrolera que provoca emisiones por quemado.*"
     )
     st.markdown(
-        "Emisiones fugitivas: En general, la cantidad de emisiones fugitivas provenientes de actividades que involucran petróleo o gas no muestra una correlación directa con los niveles de producción o los rendimientos del sistema. Está más relacionada con la cantidad, tipo y antigüedad de la infraestructura del proceso (es decir, el equipo), las características de los hidrocarburos que se producen procesan o manipulan, el diseño industrial y las prácticas de operación y mantenimiento. En general, la cantidad relativa de emisiones fugitivas depende de muchos factores, pero estas tienden a aumentar cuanto más se retrocede en la cadena de procesado del sistema y disminuyen con la concentración de ácido sulfhídrico (H2S) en el petróleo y el gas producidos. En general, el gas y el petróleo crudo contienen una combinación de hidrocarburos y varias impurezas, entre las cuales se encuentran H2O, N2, Ar, H2S y CO2. Si el gas natural contiene más de 10 ppmv de H2S, se denomina normalmente «gas ácido»; de lo contrario, se denomina «gas dulce». Las impurezas se eliminan por medio de procesamiento, tratamiento o refinamiento, según sea lo más adecuado. El CO2 crudo que se elimina de los hidrocarburos en general se ventea a la atmósfera y constituye una fuente de emisiones fugitivas.(Change, n.d.)"
+        """**Emisiones fugitivas:** En general, la cantidad de emisiones fugitivas provenientes de actividades que 
+        involucran petróleo o gas no muestran una correlación directa con los niveles de producción o los rendimientos 
+        del sistema. Está más relacionada con la cantidad, tipo y antigüedad de la infraestructura del proceso (es 
+        decir, el equipo como se observa en la **Imagen 3**), las características de los hidrocarburos que se producen 
+        procesan o manipulan, el diseño industrial y las prácticas de operación y mantenimiento. En general, la cantidad 
+        relativa de emisiones fugitivas depende de muchos factores, pero estas tienden a aumentar cuanto más se 
+        retrocede en la cadena de procesado del sistema y disminuyen con la concentración de ácido sulfhídrico (H2S) en 
+        el petróleo y el gas producidos. En general, el gas y el petróleo crudo contienen una combinación de 
+        hidrocarburos y varias impurezas, entre las cuales se encuentran H2O, N2, Ar, H2S y CO2. Si el gas natural 
+        contiene más de 10 ppmv de H2S, se denomina normalmente «gas ácido»; de lo contrario, se denomina «gas dulce». 
+        Las impurezas se eliminan por medio de procesamiento, tratamiento o refinamiento, según sea lo más adecuado. El 
+        CO2 crudo que se elimina de los hidrocarburos en general se ventea a la atmósfera y constituye una fuente de 
+        emisiones fugitivas.(Change, n.d.)"""
     )
     image_fugitiva = Image.open("resources/emisiones_fugitivas.jpg")
     st.image(image_fugitiva)
     st.caption(
-        "*Emisiones fugitivas que se pueden producir en los equipos de facilidades petroleras.*"
+        "*Imagen 3. Emisiones fugitivas que se pueden producir en los equipos de facilidades petroleras.*"
     )
 
-    # RESULTADOS ESPERADOS
-    st.header("""-Resultados Esperados""")
-    st.markdown(
-        "Mediante la creación y uso de la aplicación web creada se espera poder presentar los datos de las emisiones de CO2 de manera más atractiva y representativa para que los datos puedan ser evaluados y determinar si son aptos para futuros Proyectos CCUS."
-    )
-    st.markdown(
-        "El acogimiento de la herramienta y el impulso a la comunidad en ampliar su interés en representar futuros proyectos con ayuda de herramientas de lenguaje de programación como una alternativa llamativa y colaborativa en proyectos de mayor grado."
-    )
+    #DESCRIPCION SOBRE LOS FACTORES DE EMISION
+    st.header("**Factores de Emisión**")
+
 
     # CONCLUSIONES
     st.header("Conclusiones")
     st.markdown(
-        "Gracias al uso de la herramienta de lenguaje de programación Python se podrá representar los datos de las emisiones de CO2 y cargarlo a la plataforma de Github donde cualquier persona ya sea investigadora o natural pueda tener conocimiento acerca de las emisiones que se producen en los campos de estudio, al mismo tiempo tenemos que estas personas si están interesadas en el proyecto o quieren aportar mayor información recopilada pueden añadir datos de más fuentes de emisión estacionarias ya que el aplicativo queda abierto a mayor aportaciones."
+        """Se espera que la implementación de este aplicativo aporte al desarrollo de la tecnología CCUS y captar el 
+        interés de Industrias, Gobierno y academia para tener en mayor consideración las emisiones de CO2 que pueden 
+        producir, con la finalidad de representar de una mejor manera los diferentes tipos de datos de emisiones de CO2 
+        provenientes de fuentes estacionarias, abarcando mayor número de espacios de control potencial, identificando 
+        en donde se producen la mayor cantidad de emisiones de gases de efecto invernadero y teniendo una evaluación más 
+        rápida y precisa de la cuantificación de los datos. De la misma forma se planea que el aplicativo llame la 
+        atención de personas interesadas de tal forma que nos puedan colaborar con la extensión de la base de datos y 
+        mejora de la herramienta (aplicativo web) debido a que es una herramienta open-source."""
     )
     # Load image
-    image = Image.open("resources/ccs.jpg")
+    image = Image.open("resources/Digitalizacion_2.jpg")
     st.image(image)
-    st.caption("*CCUS Framework.*")
+    st.caption("*Imagen 4. Digitalization value chain.*")
 
 # OPCION REFINIRIES DATA
 if options == "Refineries data":
@@ -256,71 +278,82 @@ elif options == "Thermal plants data":
 
     st.header("Plantas Termoeléctricas")
     st.markdown(
-        "Las centrales térmicas convencionales,  también llamadas termoeléctricas convencionales, utilizan combustibles fósiles (gas natural, carbón o fueloil) para generar energía eléctrica mediante un ciclo termodinámico de agua-vapor. El término ‘convencional’ se utiliza para diferenciarlas de otras centrales térmicas, como las de ciclo combinado o las nucleares. "
+        """En el **Video 2** Obseramos el funcionamiento de las centrales térmicas convencionales que utilizan 
+        combustibles fósiles (gas natural, carbón o fueloil) para generar energía eléctrica mediante un ciclo 
+        termodinámico de agua-vapor. El término ‘convencional’ se utiliza para diferenciarlas de otras centrales
+        térmicas, como las de ciclo combinado o las nucleares. """
     )
     video_ter = open("resources/Termo.mp4", "rb")
     st.video(video_ter)
-    st.caption("*Thermal Plants Value Chain*")
+    st.caption("*Video 2. Thermal Plants Value Chain*")
     st.markdown(
-        "Las centrales térmicas convencionales están compuestas de varios elementos que posibilitan la transformación de los combustibles fósiles en energía eléctrica. Sus componentes principales son:"
+        """Las centrales térmicas convencionales como en la **Imagen 5** están compuestas de varios elementos que 
+        posibilitan la transformación de los combustibles fósiles en energía eléctrica. Sus componentes principales 
+        son:"""
     )
     st.markdown(
-        "•Caldera: espacio donde el agua se transforma en vapor gracias a la quema de combustible. En este proceso la energía química se transforma en térmica."
+        """-Caldera: espacio donde el agua se transforma en vapor gracias a la quema de combustible. En este proceso la 
+        energía química se transforma en térmica."""
     )
     st.markdown(
-        "•Serpentines: cañerías por donde circula el agua que se transforma en vapor. En ellos se produce el intercambio de calor entre los gases de la combustión y el agua."
+        """-Serpentines: cañerías por donde circula el agua que se transforma en vapor. En ellos se produce el 
+        intercambio de calor entre los gases de la combustión y el agua."""
     )
     st.markdown(
-        "•Turbina de vapor: máquina que recoge el vapor de agua y que, gracias a un complejo sistema de presiones y temperaturas, consigue que se mueva el eje que la atraviesa. Esta turbina normalmente tiene varios cuerpos, de alta, media y baja presión, para aprovechar al máximo el vapor de agua."
+        """-Turbina de vapor: máquina que recoge el vapor de agua y que, gracias a un complejo sistema de presiones y 
+        temperaturas, consigue que se mueva el eje que la atraviesa. Esta turbina normalmente tiene varios cuerpos, de 
+        alta, media y baja presión, para aprovechar al máximo el vapor de agua."""
     )
     st.markdown(
-        "•Generador: máquina que recoge la energía mecánica generada en el eje que atraviesa la turbina y la transforma en eléctrica mediante inducción electromagnética. Las centrales eléctricas transforman la energía mecánica del eje en una corriente eléctrica trifásica y alterna. El generador conecta el eje que atraviesa los diferentes cuerpos. "
+        """-Generador: máquina que recoge la energía mecánica generada en el eje que atraviesa la turbina y la 
+        transforma en eléctrica mediante inducción electromagnética. Las centrales eléctricas transforman la energía 
+        mecánica del eje en una corriente eléctrica trifásica y alterna. El generador conecta el eje que atraviesa los 
+        diferentes cuerpos. """
     )
     image_thermal = Image.open("resources/image_termo.jpeg")
     st.image(image_thermal)
-    st.caption("*Instalaciones de centrales o plantas Térmicas*")
+    st.caption("*Imagen 5. Instalaciones de centrales o plantas Térmicas*")
 
     # LLAMADO A LA DATA THERMAL PLANTS
     st.header("Base de datos de Plantas Termoeléctricas en Ecuador 2016-2020.")
     st.markdown(
-        "Entre las plantas térmicas en Ecuador enunciamos algunas de las que hemos podido obtener los datos, tanto de la Energía Neta producida y de las emisiones de CO2 que provocan estas actividades, ya que son las variables que más nos interesan en este proyecto."
+        """Entre las plantas térmicas en Ecuador enunciamos algunas de las que hemos podido obtener los datos, tanto de 
+        la Energía Neta producida, el tipo de combustible que utilizan y la cantidad del mismo, ya que son las variables 
+        que más nos interesan en este proyecto."""
     )
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
     df = pd.read_sql_query("SELECT* FROM Termoelectricas_ECU", engine)
-    #df = df.fillna(0)
+    df = df.replace("",0)
     df
 
     st.caption(
-        "*Base de datos de la energía neta producida y las emisiones de CO2 de la plantas termoeléctricas de Ecuador (2016-2020).*"
+        """*Base de datos de la energía neta producida, tipo de combustible y su cantidad, de las plantas 
+        termoeléctricas de Ecuador (2016-2020).*"""
     )
     #CONVERTIR DATAFRAME DIESEL(GALONES) DE STR A FLOAT
     df[["Diesel(galones)"]] = df[["Diesel(galones)"]].astype(float)
 
     #CALCULO DE EMISIONES CO2 POR DIESEL(GALONES)
-    df[["Diesel(galones)"]] = df[["Diesel(galones)"]].fillna(0)
     df[["Emisiones de CO2 causadas por Diesel (TON)"]] = (df[["Diesel(galones)"]] * 3.7854 * 0.87 / 1000) * (0.0408 * 72.6)
     df[["termoelectrica","Emisiones de CO2 causadas por Diesel (TON)"]]
 
     # CONVERTIR DATAFRAME FUEL OIL (GALONES) DE STR A FLOAT
-    df[["Fuel Oil(gal)"]] = df[["FuelOil(gal)"]].replace("",0)
-    df[["Fuel Oil(gal)"]] = df[["Fuel Oil(gal)"]].astype(float)
+    df[["Fuel Oil(gal)"]] = df[["FuelOil(gal)"]].astype(float)
 
     #CALCULO DE EMISIONES CO2 POR FUEL OIL (GALONES)
     df[["Emisiones de CO2 causadas por Fuel Oil (TON)"]] = (df[["Fuel Oil(gal)"]] * 3.7854 * 0.992 / 1000) * (0.0392 * 75.5)
     df[["termoelectrica", "Emisiones de CO2 causadas por Fuel Oil (TON)"]]
 
     # CONVERTIR DATAFRAME GAS NATURAL DE STRA A FLOAT
-    df[["Gas Natural"]] = df[["GasNatural(Kpc)"]].replace("",0)
-    df[["Gas Natural"]] = df[["Gas Natural"]].astype(float)
+    df[["Gas Natural"]] = df[["GasNatural(Kpc)"]].astype(float)
 
     #CALCULO DE EMISIONES DE CO2 POR GAS NATURAL (Kpc)
     df[["Emisiones de CO2 causadas por Gas Natural (TON)"]] = (df[["Gas Natural"]] * 28316.85 * 0.000737 / 1000) * (0.0465 * 54.3)
     df[["termoelectrica", "Emisiones de CO2 causadas por Gas Natural (TON)"]]
 
     #CONVERTIR DATAFRAME CRUDO DE STR A FLOAT
-    df[["Crudo"]] = df[["crudo(galones)"]].replace("",0)
-    df[["Crudo"]] = df[["Crudo"]].astype(float)
+    df[["Crudo"]] = df[["crudo(galones)"]].astype(float)
 
     #CALCULO DE EMISIONES DE CO2 POR CRUDO (GAL)
     df[["Emisiones de CO2 causadas por Crudo (TON)"]] = (df[["Crudo"]] * 3.7854 * 0.953 / 1000) * (0.0448 * 79.85)
@@ -329,18 +362,3 @@ elif options == "Thermal plants data":
     #EMISIONES TOTALES GENERADAS EN LA TERMOELECTRICAS (TON)
     df["Emisiones de CO2 (TON)"] = df["Emisiones de CO2 causadas por Diesel (TON)"] + df["Emisiones de CO2 causadas por Fuel Oil (TON)"] + df["Emisiones de CO2 causadas por Gas Natural (TON)"] + df["Emisiones de CO2 causadas por Crudo (TON)"]
     df[["termoelectrica", "Emisiones de CO2 (TON)"]]
-
-
-    #TERMOELECTRICA
-
-
-    #datos = pd.read_csv('tabla.csv')
-    #df = pd.DataFrame(datos)
-    #df[["diesel"]] = (df[["Diesel(galones)"]] * 3.7854 * 0.87 / 1000) * (0.0408 * 72.6)
-    #diesel = df[["diesel"]]
-    #df[["fuel_oil"]] = (df[["FuelOil(gal)"]] * 3.7854 * 0.992 / 1000) * (0.0392 * 75.5)
-    #fuel = df[["fuel_oil"]]
-    #df[["gas_natural"]] = (df[["GasNatural(Kpc)"]] * 28316.85 * 0.000737 / 1000) * (0.0465 * 54.3)
-    #df[["cru_gal"]] = (df[["crudo(galones)"]] * 3.7854 * 0.953 / 1000) * (0.0448 * 79.85)
-    #df["Emisiones CO2"] = df["diesel"] + df["fuel_oil"] + df["gas_natural"] + df["cru_gal"]
-    #df["Emisiones CO2"]
