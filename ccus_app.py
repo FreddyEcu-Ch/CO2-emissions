@@ -153,7 +153,7 @@ if options == "Refineries data":
         "A continuación se presenta una base de datos recopilada de entidades gubernamentales sobre las emisiones de CO2 consecuencia de las actividades de refinación del crudo que se maneja dentro de esta fuente de emision estacionaria."
     )
 
-    engine = create_engine("sqlite:///Refineries/CO2_EOR.db")
+    engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
     df = pd.read_sql_query("SELECT* FROM R_Shushufindi", engine)
     df
@@ -285,339 +285,62 @@ elif options == "Thermal plants data":
     st.markdown(
         "Entre las plantas térmicas en Ecuador enunciamos algunas de las que hemos podido obtener los datos, tanto de la Energía Neta producida y de las emisiones de CO2 que provocan estas actividades, ya que son las variables que más nos interesan en este proyecto."
     )
-    engine = create_engine("sqlite:///Refineries/CO2_EOR.db")
-    ter = pd.read_sql_query("SELECT* FROM Datos_termoelectricas", engine)
-    ter
+    engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+    df = pd.read_sql_query("SELECT* FROM Termoelectricas_ECU", engine)
+    #df = df.fillna(0)
+    df
+
     st.caption(
         "*Base de datos de la energía neta producida y las emisiones de CO2 de la plantas termoeléctricas de Ecuador (2016-2020).*"
     )
+    #CONVERTIR DATAFRAME DIESEL(GALONES) DE STR A FLOAT
+    df[["Diesel(galones)"]] = df[["Diesel(galones)"]].astype(float)
 
-    # GRAFICO ENGLOBADOS DE LAS PLANTAS TERMNALES Y SUS EMISIONES DE CO2
-    st.markdown(
-        "Representamos la base de datos en forma de un gráfico de barras para una mejor interpretación de la cantidas de Energía Neta producida y al mismo tiempo observar la cantidad de CO2 que se emiten."
-    )
-    fig7 = plt.figure(figsize=(12, 8), edgecolor="black")
-    ax1 = fig7.add_subplot()
-    ax2 = ax1.twinx()
+    #CALCULO DE EMISIONES CO2 POR DIESEL(GALONES)
+    df[["Diesel(galones)"]] = df[["Diesel(galones)"]].fillna(0)
+    df[["Emisiones de CO2 causadas por Diesel (TON)"]] = (df[["Diesel(galones)"]] * 3.7854 * 0.87 / 1000) * (0.0408 * 72.6)
+    df[["termoelectrica","Emisiones de CO2 causadas por Diesel (TON)"]]
 
-    ter.groupby(["año", "Termoelectrica"])["EnergiaBruta(MWH)"].sum().plot(
-        kind="bar", width=0.5, color="seagreen", ax=ax1, label="Net energy"
-    )
-    ter.groupby(["año", "Termoelectrica"])["EmisionCO2[Ton]"].sum().plot(
-        kind="bar", width=0.5, color="red", ax=ax2, label=r"$CO_{2}$ emissions"
-    )
-    ax1.set_xlabel("Year", fontsize=14)
-    ax1.set_ylabel("Net energy (MWh)", fontsize=14)
-    ax2.set_ylabel(r"$CO_{2}$ emissions (Ton)", fontsize=14)
-    ax1.legend(loc="upper center")
-    ax2.legend(loc="upper right")
-    ax2.grid(visible=False)
-    plt.title(
-        r"Energy production and $CO_{2}$ emissions of the thermal plants",
-        fontname="Times New Roman",
-        size=20,
-        fontweight="bold",
-    )
-    st.pyplot(fig7)
-    st.caption(
-        "*Energía Neta producida y emisiones de CO2 en plantas Termoeléctricas en Ecuador (2016-2020).*"
-    )
+    # CONVERTIR DATAFRAME FUEL OIL (GALONES) DE STR A FLOAT
+    df[["Fuel Oil(gal)"]] = df[["FuelOil(gal)"]].replace("",0)
+    df[["Fuel Oil(gal)"]] = df[["Fuel Oil(gal)"]].astype(float)
 
-    # LLAMADO A LA DATA THERMAL PLANTS AMAZONAS
-    st.header("Planta Termoeléctrica Amazonas")
-    ter_ama = ter[ter["Termoelectrica"] == "Amazonas"]
-    ter_ama
-    st.caption(
-        "*Base de datos de la Energía Neta Producida y las emisiones de CO2 en la Planta Termoeléctrica Amazonas (2016-2020).*"
-    )
+    #CALCULO DE EMISIONES CO2 POR FUEL OIL (GALONES)
+    df[["Emisiones de CO2 causadas por Fuel Oil (TON)"]] = (df[["Fuel Oil(gal)"]] * 3.7854 * 0.992 / 1000) * (0.0392 * 75.5)
+    df[["termoelectrica", "Emisiones de CO2 causadas por Fuel Oil (TON)"]]
 
-    # GRAFICO DE LA PRODUCCION DE ENERGIA THERMA PLANT AMAZONAS
-    st.subheader("*Energía Neta Producida en la Planta Termoeléctrica Amazonas.*")
-    st.markdown(
-        "De la base de datos agarrando únicamente la variable de 'Energía Neta' podemos representar de manera gráfica para visualizar de mejor manera cuantos Megavatios-Hora (MWH) la planta termoeléctrica produjo."
-    )
-    fig4, ax = plt.subplots(figsize=(12, 8))
+    # CONVERTIR DATAFRAME GAS NATURAL DE STRA A FLOAT
+    df[["Gas Natural"]] = df[["GasNatural(Kpc)"]].replace("",0)
+    df[["Gas Natural"]] = df[["Gas Natural"]].astype(float)
 
-    ax.bar(ter_ama["año"], ter_ama["EnergiaBruta(MWH)"], color="seagreen")
-    ax.set_xlabel("Year", fontsize=14)
-    ax.set_ylabel("Net energy (MWH)", fontsize=14)
-    ax.set_title(
-        "Anual energy production of the thermal plant Amazonas",
-        fontname="Times New Roman",
-        size=20,
-        fontweight="bold",
-    )
-    st.pyplot(fig4)
-    st.caption(
-        "*Gráfico de barras de la Energía Neta producida en la Planta Termoeléctrica Amazonas (2016-2020).*"
-    )
+    #CALCULO DE EMISIONES DE CO2 POR GAS NATURAL (Kpc)
+    df[["Emisiones de CO2 causadas por Gas Natural (TON)"]] = (df[["Gas Natural"]] * 28316.85 * 0.000737 / 1000) * (0.0465 * 54.3)
+    df[["termoelectrica", "Emisiones de CO2 causadas por Gas Natural (TON)"]]
 
-    # GRAFICO DE BARRAS DE LAS EMISIONES DE CO2 EN THERMAL PLANT AMAZONAS
-    st.subheader(
-        "*Emisiones de CO2 por las actividades realizadas en la Planta Termoeléctrica Amazonas.*"
-    )
-    st.markdown(
-        "Al tratarse de ser una planta termoeléctrica convencional, el combustible se quema en una cladera provocando la energía térmica que se utiliza para calentar el agua , que se transforma en vapor a una presión muy elevada. En este proceso por la quema de combustible tenemos las emisiones de CO2 las cuáles podemos representarlas gráficamente en unidades de Toneladas (Ton). "
-    )
-    fig5, ax = plt.subplots(figsize=(12, 8))
+    #CONVERTIR DATAFRAME CRUDO DE STR A FLOAT
+    df[["Crudo"]] = df[["crudo(galones)"]].replace("",0)
+    df[["Crudo"]] = df[["Crudo"]].astype(float)
 
-    ax.bar(ter_ama["año"], ter_ama["EmisionCO2[Ton]"], color="red")
-    ax.set_xlabel("Year", fontsize=14)
-    ax.set_ylabel(r"$CO_{2}$ emissions (Ton)", fontsize=14)
-    ax.set_title(
-        r"Anual $CO_{2}$ emissions of the thermal plant Amazonas",
-        fontname="Times New Roman",
-        size=20,
-        fontweight="bold",
-    )
-    st.pyplot(fig5)
-    st.caption(
-        "*Gráfico de barras de las Emisiones de CO2 consecuencia de la producción de Energia en la Termoeléctrica Amazonas (2016-2020).*"
-    )
+    #CALCULO DE EMISIONES DE CO2 POR CRUDO (GAL)
+    df[["Emisiones de CO2 causadas por Crudo (TON)"]] = (df[["Crudo"]] * 3.7854 * 0.953 / 1000) * (0.0448 * 79.85)
+    df[["termoelectrica", "Emisiones de CO2 causadas por Crudo (TON)"]]
 
-    # GRAFICO DE BARRAS DE COMPARATIVA ENTRE LAS PRODUCCION DE ENERGIA Y EMISIONES DE CO2 EN THERMAL PLANT AMAZONAS
-    st.subheader(
-        "*Comparación entre la Energía Neta producida y las emisiones de CO2 en la pLanta Termoeléctrica Amazonas.*"
-    )
-    st.markdown(
-        "Ya teniendo las dos variables representadas podemos combinarlas en un solo gráfico donde podamos tener una rápida inferencia de la cantidad de CO2 se liberan al momento de producir Energía en la planta termoeléctrica Amazonas."
-    )
-    fig6 = plt.figure(figsize=(12, 8), edgecolor="black")
-    ax1 = fig6.add_subplot()
-    ax2 = ax1.twinx()
+    #EMISIONES TOTALES GENERADAS EN LA TERMOELECTRICAS (TON)
+    df["Emisiones de CO2 (TON)"] = df["Emisiones de CO2 causadas por Diesel (TON)"] + df["Emisiones de CO2 causadas por Fuel Oil (TON)"] + df["Emisiones de CO2 causadas por Gas Natural (TON)"] + df["Emisiones de CO2 causadas por Crudo (TON)"]
+    df[["termoelectrica", "Emisiones de CO2 (TON)"]]
 
-    ener = ter_ama.set_index("año")["EnergiaBruta(MWH)"].plot(
-        kind="bar",
-        width=0.4,
-        color="seagreen",
-        ax=ax1,
-        align="center",
-        label="Net energy",
-        position=1,
-    )
-    emi = ter_ama.set_index("año")["EmisionCO2[Ton]"].plot(
-        kind="bar",
-        width=0.4,
-        color="red",
-        ax=ax2,
-        align="center",
-        label=r"$CO_{2}$ emissions",
-        position=0,
-    )
-    ax1.set_xlabel("Year", fontsize=14)
-    ax1.set_ylabel("Net energy (MWH)", fontsize=14)
-    ax2.set_ylabel(r"$CO_{2}$ emissions (Ton)", fontsize=14)
-    ax1.legend(loc="upper center")
-    ax2.legend(loc="upper right")
-    plt.title(
-        r"Energy production and $CO_{2}$ emissions of the thermal plant Amazonas",
-        fontname="Times New Roman",
-        size=20,
-        fontweight="bold",
-    )
-    ax1.tick_params(axis="x", labelrotation=0)
-    ax2.grid(visible=False)
-    st.pyplot(fig6)
-    st.caption(
-        "*Comparación directa entre la Energía Neta producida y las emisiones de CO2 en la Planta Termoeléctrica Amazonas (2016-2020).*"
-    )
 
-    # LLAMADO A DATA THERMAL PLANT SECOYA
-    st.header("Planta Termoeléctrica Secoya")
-    st.markdown(
-        "Central Térmica Celec Secoya se encuentra en Provincia de Sucumbíos. Esta empresa se desempeña en la siguiente industria: Instalaciones eléctricas."
-    )
-    st.markdown(
-        "De la base de datos se filtró solo la información de la planta termoeléctrica Secoya para su análisis:"
-    )
-    ter_se = ter[ter["Termoelectrica"] == "Secoya"].sort_values(by="año")
-    ter_se
-    st.caption("*Base de datos de la Planta Termoeléctrica Secoya (2016-2020).*")
+    #TERMOELECTRICA
 
-    # GRAFICO DE BARRAS DE LA PRODUCCION DE ENERGIA EN LA PLANTA TERMICA SECOYA
-    st.subheader("*Energía Neta Producida en la Planta Termoeléctrica Secoya.*")
-    st.markdown(
-        "De los datos filtrados construimos un gráfico para representar mejor la cantidad de Energía que se produce en la planta termoeléctrica Secoya en unidades de Megavatios-Hora (MWH)."
-    )
-    fig8, ax = plt.subplots(figsize=(12, 8))
 
-    ax.bar(ter_se["año"], ter_se["EnergiaBruta(MWH)"], color="seagreen")
-    ax.set_xlabel("Year", fontsize=14)
-    ax.set_ylabel("Net energy (MWH)", fontsize=14)
-    ax.set_title(
-        "Anual energy production of the thermal plant Secoya",
-        fontname="Times New Roman",
-        size=20,
-        fontweight="bold",
-    )
-    st.pyplot(fig8)
-    st.caption(
-        "*Gráfico de barras de la Energía Neta producida en la Planta Termoeléctrica Secoya (2016-2020).*"
-    )
-
-    # GRAFICO DE BARRA DE LAS EMISIONES DE CO2 EN LA PLANTA TERMICA SECOYA
-    st.subheader(
-        "*Emisiones de CO2 por las actividades realizadas en la Planta Termoeléctrica Secoya.*"
-    )
-    st.markdown(
-        "De igual manera hablamos que se trata de una planta termoeléctrica convencional, donde se quema el combustible para poder producir la Energía por medio de actividades industriales y las emisiones que liberan estos procesos se las puede medir en unidades de Toneladas (Ton)."
-    )
-    fig9, ax = plt.subplots(figsize=(12, 8))
-
-    ax.bar(ter_se["año"], ter_se["EmisionCO2[Ton]"], color="red")
-    ax.set_xlabel("Year", fontsize=14)
-    ax.set_ylabel(r"$CO_{2}$ emissions (Ton)", fontsize=14)
-    ax.set_title(
-        r"Anual $CO_{2}$ emissions of the thermal plant Amazonas",
-        fontname="Times New Roman",
-        size=20,
-        fontweight="bold",
-    )
-    st.pyplot(fig9)
-    st.caption(
-        "*Gráfico de barras de las Emisiones de CO2 consecuencia de la producción de Energia en la Termoeléctrica Secoya (2016-2020).*"
-    )
-
-    # COMPARATIVA DE LA PRODUCCION DE ENERGIA Y LAS EMISIONES DE CO2 EN LA PLANTA TERMICA SECOYA
-    st.subheader(
-        "*Comparación entre la Energía Neta producida y las emisiones de CO2 en la pLanta Termoeléctrica Secoya.*"
-    )
-    st.markdown(
-        "Al tener representado los datos de las producción de Energía Neta y la de las emisiones de CO2 que ocurren en la planta termoeléctrica, podemos armar un gráfico comparativo para analizarlo de mejor manera como se relacionan estas dos variables."
-    )
-    formatter = ticker.EngFormatter()
-    fig10 = plt.figure(figsize=(12, 8), edgecolor="black")
-    ax1 = fig10.add_subplot()
-    ax2 = ax1.twinx()
-
-    ener = ter_se.set_index("año")["EnergiaBruta(MWH)"].plot(
-        kind="bar",
-        width=0.4,
-        color="seagreen",
-        ax=ax1,
-        align="center",
-        label="Net energy",
-        position=1,
-    )
-    emi = ter_se.set_index("año")["EmisionCO2[Ton]"].plot(
-        kind="bar",
-        width=0.4,
-        color="red",
-        ax=ax2,
-        align="center",
-        label=r"$CO_{2}$ emissions",
-        position=0,
-    )
-    ax1.set_xlabel("", fontsize=14)
-    ax1.set_ylabel("Net energy (MWH)", fontsize=16)
-    ax2.set_ylabel(r"$CO_{2}$ emissions (Ton)", fontsize=16)
-    ax1.tick_params(axis="x", labelsize=14)
-    ax1.tick_params(axis="y", labelsize=14)
-    ax2.tick_params(axis="y", labelsize=14)
-    ax1.yaxis.set_major_formatter(formatter)
-    ax2.yaxis.set_major_formatter(formatter)
-    ax1.set_ylim(0, 200e3)
-    ax2.set_ylim(0, 200e3)
-    ax1.legend(loc="upper center", fontsize=12)
-    ax2.legend(loc="upper right", fontsize=12)
-    ax1.tick_params(axis="x", labelrotation=0)
-    ax2.grid(visible=False)
-    st.pyplot(fig10)
-    st.caption(
-        "*Comparación directa entre la Energía Neta producida y las emisiones de CO2 en la Planta Termoeléctrica Secoya (2016-2020).*"
-    )
-    # PROMEDIO
-    st.header("Presentación de los datos promedio de las Plantas Termoeléctricas.")
-    terP = pd.read_sql_query("SELECT* FROM Termoelectricas_datos_promedio", engine)
-    terP
-    st.caption("*Promedio de cada una de las Plantas Termoeléctricas (2016-2020).*")
-
-    # PROMEDIO DE LA ENERGIA NETA PRODUCIDA EN LAS PLANTAS TERMOELECTRICAS
-    st.subheader(
-        "*Promedio de la Energía Neta producida en las plantas Termoeléctricas.*"
-    )
-
-    fig11, ax = plt.subplots(figsize=(12, 8))
-
-    ax.bar(terP["Termoeléctrica"], terP["EnergiaBruta_MWH"], color="blue")
-    ax.set_xlabel("Thermal plants", fontsize=14)
-    ax.set_ylabel("Net energy (MWH)", fontsize=14)
-    plt.xticks(rotation=45)
-    ax.set_title(
-        "Average energy production (2016-2020) of thermal plants located in the amazon region of Ecuador",
-        fontname="Times New Roman",
-        size=20,
-        fontweight="bold",
-    )
-    st.pyplot(fig11)
-    st.caption(
-        "*Gráfico de barras de los promedios de la Energía producida de las Planta Termoeléctrica en Ecuador (2016-2020).*"
-    )
-
-    # PROMEDIO DE LAS EMISIONES DE CO2 EN LAS PLANTAS TERMOELECTRICAS ECUADOR
-    st.subheader("*Promedio de las emisiones de CO2 en las plantas Termoeléctricas.*")
-    fig12, ax = plt.subplots(figsize=(12, 8))
-
-    ax.bar(terP["Termoeléctrica"], terP["Emision_TCO2"], color="red")
-    ax.set_xlabel("Thermal plants", fontsize=14)
-    ax.set_ylabel(r"$CO_{2}$ emissions (Ton)", fontsize=14)
-    plt.xticks(rotation=45)
-    ax.set_title(
-        r"Average $CO_{2}$ emissions (2016-2020) of thermal plants located in the amazon region of Ecuador",
-        fontname="Times New Roman",
-        size=20,
-        fontweight="bold",
-    )
-    st.pyplot(fig12)
-    st.caption(
-        "*Gráfico de barras de los promedios de las emisiones de CO2 de las Planta Termoeléctrica en Ecuador (2016-2020).*"
-    )
-
-    # COMPARACION DE LOS PROMEDIOS DE LA ENERGIA NETA PRODUCIDA Y EL PROMEDIO DE LAS EMISIONES DE CO2 EN LAS PLANTAS TERMOELECTRICAS
-    st.subheader(
-        "*Comparación entre los promedios de la Energía Neta producida y el promedio de las emisiones de CO2 en las Plantas Termoeléctricas en Ecuador.*"
-    )
-    st.markdown("")
-    formatter = ticker.EngFormatter()
-    fig13 = plt.figure(figsize=(15, 11), edgecolor="black")
-    ax1 = fig13.add_subplot()
-    ax2 = ax1.twinx()
-
-    ener = terP.plot.bar(
-        x="Termoeléctrica",
-        y="EnergiaBruta_MWH",
-        width=0.4,
-        color="blue",
-        ax=ax1,
-        align="center",
-        label="Net energy",
-        position=1,
-    )
-    emi = terP.plot.bar(
-        x="Termoeléctrica",
-        y="Emision_TCO2",
-        width=0.4,
-        color="red",
-        ax=ax2,
-        align="center",
-        label=r"$CO_{2}$ emissions",
-        position=0,
-    )
-
-    ax1.set_xlabel("", fontsize=14)
-    ax1.set_ylabel("Net energy (MWH)", fontsize=16)
-    ax2.set_ylabel(r"$CO_{2}$ emissions (Ton)", fontsize=16)
-    ax1.tick_params(axis="x", labelrotation=45, labelsize=14)
-    ax1.tick_params(axis="y", labelsize=14)
-    ax2.tick_params(axis="y", labelsize=14)
-    ax1.yaxis.set_major_formatter(formatter)
-    ax2.yaxis.set_major_formatter(formatter)
-    ax1.set_ylim(0, 200e3)
-    ax2.set_ylim(0, 200e3)
-    ax1.legend(loc="upper center", fontsize=12)
-    ax2.legend(loc="upper right", fontsize=12)
-    ax2.grid(visible=False)
-    st.pyplot(fig13)
-    st.caption(
-        "*Gráfico de barras del promedio de la Energía Neta producida y el promedio de las emisiones de CO2 en las Plantas Termoeléctricas en Ecuador (2016-2020).*"
-    )
+    #datos = pd.read_csv('tabla.csv')
+    #df = pd.DataFrame(datos)
+    #df[["diesel"]] = (df[["Diesel(galones)"]] * 3.7854 * 0.87 / 1000) * (0.0408 * 72.6)
+    #diesel = df[["diesel"]]
+    #df[["fuel_oil"]] = (df[["FuelOil(gal)"]] * 3.7854 * 0.992 / 1000) * (0.0392 * 75.5)
+    #fuel = df[["fuel_oil"]]
+    #df[["gas_natural"]] = (df[["GasNatural(Kpc)"]] * 28316.85 * 0.000737 / 1000) * (0.0465 * 54.3)
+    #df[["cru_gal"]] = (df[["crudo(galones)"]] * 3.7854 * 0.953 / 1000) * (0.0448 * 79.85)
+    #df["Emisiones CO2"] = df["diesel"] + df["fuel_oil"] + df["gas_natural"] + df["cru_gal"]
+    #df["Emisiones CO2"]
