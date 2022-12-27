@@ -16,16 +16,27 @@ from matplotlib.ticker import AutoMinorLocator
 from streamlit_option_menu import option_menu
 
 # Desing of the app
-st.set_page_config(page_title="CCUS app")
+icon = Image.open("resources/icon.png")
+st.set_page_config(page_title="CCUS App",page_icon=icon)
+st.markdown(
+    """
+<style>
+h1 {text-align: center;
+}
+body {background-color: #DCE3D5;
+      width: 1400px;
+      margin: 15px auto;
+}
+</style>""",
+    unsafe_allow_html=True,
+)
+
 # Create title of web app
 st.title("CO2 Emissions App")
 
+Logo = Image.open("Resources/ESPOL.png")
+st.sidebar.image(Logo)
 
-# List of options
-# options = st.sidebar.radio(
-#    "Choose your option",
-#    ("Home", "Refineries data", "Thermal plants data", "Surface Facilities"),
-# )
 
 # MENU DE OPCIONES PRINCIPAL
 
