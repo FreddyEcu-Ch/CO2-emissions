@@ -6,7 +6,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# import plotly.express as px
+import plotly.express as px
 from sqlalchemy import create_engine
 from matplotlib import ticker
 from matplotlib.ticker import AutoMinorLocator
@@ -373,3 +373,20 @@ elif options == "Thermal plants data":
     #EMISIONES TOTALES GENERADAS EN LA TERMOELECTRICAS (TON)
     df["Emisiones de CO2 (TON)"] = df["Emisiones de CO2 causadas por Diesel (TON)"] + df["Emisiones de CO2 causadas por Fuel Oil (TON)"] + df["Emisiones de CO2 causadas por Gas Natural (TON)"] + df["Emisiones de CO2 causadas por Crudo (TON)"]
     df[["termoelectrica", "Emisiones de CO2 (TON)"]]
+    list_termo = list(set(df['termoelectrica']))
+    paleta = list(sns.color_palette(palette='Spectral', n_colors=len(list_termo)).as_hex())
+    dict_color = dict(zip(list_termo, paleta))
+
+    fig = px.bar(df, x='termoelectrica', y='Emisiones de CO2 (TON)',
+                 color='termoelectrica',
+                 color_discrete_map=dict_color,
+                 animation_frame='aסo',
+                 animation_group='termoelectrica',
+                 range_y=[0, 1.2])
+    fig.update_xaxes(title='Termoelectricas', visible=True)
+    fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                     visible=True, showticklabels=True)
+    fig.update_layout(width=1000,height=600, showlegend=True,
+                      xaxis=dict(tickmode='linear',dtick=1))
+    fig.update_traces(textfont_size=16,textangle=0)
+    fig.show()
