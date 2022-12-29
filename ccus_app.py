@@ -57,17 +57,16 @@ if options == "Home":
 
     # INTRODUCCION
     st.markdown(
-        """ El problema decisivo de nuestro tiempo sigue siendo el brutal cambio climático. Los cinco años más cálidos
-         desde que comenzó el registro fueron los últimos. La producción de gases de efecto invernadero (GEI),
-          principalmente CO2, CH, N2O y gases fluorados, está aumentando exponencialmente con el tiempo. Como resultado,
-           la temperatura global promedio ha aumentado 1,1 °C en comparación con los niveles preindustriales. El CO2,
-            el gas de efecto invernadero más prevalente, ha aumentado sus emisiones globales de 2 Gt/año en 1990 a
-             35 Gt/año en 2010. Tres factores principales que explican este aumento de las emisiones de gases de efecto
-              invernadero son el crecimiento de la población, la expansión económica mundial y la reducción de la
-               capacidad ambiental para absorber, reflejar y liberar CO2. (Rubén et al., 2021) """
+        """La producción de gases de efecto invernadero (GEI), principalmente CO2, CH, N2O y gases fluorados, está 
+        aumentando exponencialmente con el tiempo. Como resultado, la temperatura global promedio ha aumentado 1,1 °C en 
+        comparación con los niveles preindustriales. El CO2, el gas de efecto invernadero más prevalente, ha aumentado 
+        sus emisiones globales de 2 Gt/año en 1990 a 35 Gt/año en 2010. Tres factores principales que explican este 
+        aumento de las emisiones de gases de efecto invernadero son el crecimiento de la población, la expansión 
+        económica mundial y la reducción de la capacidad ambiental para absorber, reflejar y 
+        liberar CO2. (Rubén et al., 2021) """
     )
     st.markdown(
-        """ Para reducir las emisiones globales de CO2, la captura, uso y almacenamiento de carbono (CCUS)
+        """ Para reducir las emisiones globales de CO2; la captura, uso y almacenamiento de carbono (CCUS)
          se ha convertido en una posible estrategia complementaria. Por un lado, el CO2 queda atrapado, reduciendo
           su papel en el cambio climático. El plan CCUS consta de cuatro fases: recolección, transporte, almacenamiento
            y uso. """
@@ -173,17 +172,43 @@ if options == "Home":
     # Load image
     image = Image.open("resources/Digitalizacion_2.jpg")
     st.image(image)
-    st.caption("*Imagen 4. Digitalization value chain.*")
+    st.caption("*Imagen 4. Digitalization Value Chain.*")
 
 # OPCION REFINIRIES DATA
 if options == "Refineries data":
+    #REFINERIAS - DESCRIPCION DE PROCESOS
+    st.header("Refinerías de Petróleo")
+    st.markdown("""Las refinerías, que son instalaciones de la industria petroquímica, producen compuestos hechos de 
+    petróleo crudo al convertir y refinar productos como gasolina, diésel, asfalto, queroseno, GLP, petróleo y 
+    combustible para eliminar las impurezas. También se producen productos petroquímicos como el etileno y el 
+    propileno."""
+                )
+    st.markdown("""El proceso de refinación se basa en dos columnas de destilación, una al vacío y otra a presión 
+    atmosférica, con múltiples salidas intermedias. El proceso de destilación química consiste en calentar dos o más 
+    sustancias con diferentes puntos de ebullición y separarlas en función de su volatilidad. Si hay más de dos 
+    componentes, se crean intermedios para obtener componentes adicionales. Cada una de estas corrientes tiene un 
+    proceso correspondiente donde los componentes adicionales se separan, combinan, reaccionan y el producto final se 
+    purifica."""
+                )
+    st.markdown("""En el **video 2** se ilustra el proceso de refinación de hidrocarburos.""")
+    video_ref = open("resources/Refinería_Procesos.mp4", "rb")
+    st.video(video_ref)
+    st.caption("*Video 2. Refinery Value Chain*")
+    st.markdown("""Las refinerías de petróleo emiten gases como dióxido de azufre, dióxido de nitrógeno, dióxido de 
+    carbono, monóxido de carbono, metano, fluoruro de hidrógeno, dioxinas, cloro y otros contaminantes durante el 
+    procesamiento químico que contribuyen al smog y la contaminación del aire."""
+                )
     # LLAMADO DE LA DATA REFINERIA SHUSHUFINDI
     st.header("Refineria Shushufindi ")
     st.markdown(
-        "La Refinería Shushufindi abastece de gasolina y diésel a las provincias de Sucumbíos, Orellana y Napo, y de GLP a la ciudad de Quito y su zona de influencia. La capacidad de procesamiento de la Refinería Shushufindi, es de 20 mil barriles de crudo por día."
+        """La Refinería Shushufindi abastece de gasolina y diésel a las provincias de Sucumbíos, Orellana y Napo, y de 
+        GLP a la ciudad de Quito y su zona de influencia. La capacidad de procesamiento de la Refinería Shushufindi, es 
+        de 20 mil barriles de crudo por día."""
     )
     st.markdown(
-        "A continuación se presenta una base de datos recopilada de entidades gubernamentales sobre las emisiones de CO2 consecuencia de las actividades de refinación del crudo que se maneja dentro de esta fuente de emision estacionaria."
+        """A continuación se presenta una base de datos recopilada de entidades gubernamentales sobre las emisiones de 
+        CO2 consecuencia de las actividades de refinación del crudo que se maneja dentro de esta fuente de emision 
+        estacionaria."""
     )
 
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
@@ -195,11 +220,12 @@ if options == "Refineries data":
     # GRAFICO DE BARRAS DE LOS BARRILES REFINADOS SHUSHUFINDI
     st.header("Producción de la Refinería Shushufindi 2010-2020")
     st.markdown(
-        "Con la ayuda de un gráfico de barras se puede observar la producción del petróleo refinado y sus variaciones en los años del 2010 al 2020 en unidades de Millones de barriles (MMbbl)."
+        """Con la ayuda de un gráfico de barras se puede observar la producción del petróleo refinado y sus variaciones 
+        en los años del 2010 al 2020 en unidades de Millones de barriles (MMbbl)."""
     )
     fig1, ax = plt.subplots(figsize=(14, 8))
 
-    ax.bar(df["año"], df["RefinacionBarriles"], color="navy")
+    ax.bar(df["año"], df["RefinacionBarriles"], color="#e5be01")
     ax.set_xlabel("Year", fontsize=14)
     ax.set_ylabel("Oil refined (MMbbl)", fontsize=14)
     ax.set_title(
@@ -215,7 +241,9 @@ if options == "Refineries data":
     # GRAFICO BARRAS EMICIONES CO2 SHUSHUFINDI
     st.header("Emisiones de CO2 producidas en la Refinería Shushufindi 2010-2020.")
     st.markdown(
-        "Todo proceso industrial genera emisiones de CO2, en la refinería Shushufinfi se pudo cuantificar estas emisiones provenientes de la producción dentro de la planta en unidades de Toneladas (Ton), las cuales se presentan a continuación:"
+        """Todo proceso industrial genera emisiones de CO2, en la refinería Shushufinfi se pudo cuantificar estas 
+        emisiones provenientes de la producción dentro de la planta en unidades de Toneladas (Ton), las cuales se 
+        presentan a continuación:"""
     )
 
     fig2, ax = plt.subplots(figsize=(12, 8))
@@ -239,7 +267,8 @@ if options == "Refineries data":
         "Comparativa de la Refinación de Barriles y las Emisiones de CO2 que emiten."
     )
     st.markdown(
-        "Una vez obtenidos los datos de la producción y las emisiones de CO2 que estas actividades producen, podemos compararlas para saber cuantos barriles refinados corresponden a cada tonelada de CO2 emitida."
+        """Una vez obtenidos los datos de la producción y las emisiones de CO2 que estas actividades producen, podemos 
+        compararlas para saber cuantos barriles refinados corresponden a cada tonelada de CO2 emitida."""
     )
 
     formatter = ticker.EngFormatter()
@@ -251,7 +280,7 @@ if options == "Refineries data":
         x="año",
         y="RefinacionBarriles",
         width=0.4,
-        color="navy",
+        color="#e5be01",
         ax=ax1,
         align="center",
         label="Oil refined",
@@ -289,14 +318,14 @@ elif options == "Thermal plants data":
 
     st.header("Plantas Termoeléctricas")
     st.markdown(
-        """En el **Video 2** Obseramos el funcionamiento de las centrales térmicas convencionales que utilizan 
+        """En el **Video 3** observamos el funcionamiento de las centrales térmicas convencionales que utilizan 
         combustibles fósiles (gas natural, carbón o fueloil) para generar energía eléctrica mediante un ciclo 
         termodinámico de agua-vapor. El término ‘convencional’ se utiliza para diferenciarlas de otras centrales
         térmicas, como las de ciclo combinado o las nucleares. """
     )
     video_ter = open("resources/Termo.mp4", "rb")
     st.video(video_ter)
-    st.caption("*Video 2. Thermal Plants Value Chain*")
+    st.caption("*Video 3. Thermal Plants Value Chain*")
     st.markdown(
         """Las centrales térmicas convencionales como en la **Imagen 5** están compuestas de varios elementos que 
         posibilitan la transformación de los combustibles fósiles en energía eléctrica. Sus componentes principales 
@@ -324,7 +353,14 @@ elif options == "Thermal plants data":
     image_thermal = Image.open("resources/image_termo.jpeg")
     st.image(image_thermal)
     st.caption("*Imagen 5. Instalaciones de centrales o plantas Térmicas*")
-
+    st.markdown("""Las dos principales formas en que las centrales térmicas tradicionales afectan al medio ambiente son 
+    la emisión de residuos a la atmósfera y la transferencia de calor. En el primer caso, la quema de combustibles 
+    fósiles produce partículas que ingresan a la atmósfera y pueden dañar el medio ambiente terrestre. A este tipo de 
+    plantas instalan chimeneas para dispersar estas partículas y así reducir sus efectos nocivos en el aire. Además, 
+    una parte importante de estas partículas es captada por los filtros de partículas de las centrales térmicas 
+    convencionales, impidiendo que se escapen. Para el segundo caso de impacto al ambiente las centrales termoeléctricas 
+    de ciclo abierto pueden aumentar la temperatura de los ríos y océanos en términos de transferencia de calor."""
+                )
     # LLAMADO A LA DATA THERMAL PLANTS
     st.header("Base de datos de Plantas Termoeléctricas en Ecuador 2016-2020.")
     st.markdown(
@@ -390,3 +426,6 @@ elif options == "Thermal plants data":
                       xaxis=dict(tickmode='linear',dtick=1))
     fig.update_traces(textfont_size=16,textangle=0)
     fig.show()
+
+elif options == "Surface Facilities":
+    st.header("Facilidades Petroleras")
