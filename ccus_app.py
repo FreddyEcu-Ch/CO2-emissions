@@ -409,6 +409,8 @@ elif options == "Thermal plants data":
     #EMISIONES TOTALES GENERADAS EN LA TERMOELECTRICAS (TON)
     df["Emisiones de CO2 (TON)"] = df["Emisiones de CO2 causadas por Diesel (TON)"] + df["Emisiones de CO2 causadas por Fuel Oil (TON)"] + df["Emisiones de CO2 causadas por Gas Natural (TON)"] + df["Emisiones de CO2 causadas por Crudo (TON)"]
     df[["termoelectrica", "Emisiones de CO2 (TON)"]]
+
+
     list_termo = list(set(df['termoelectrica']))
     paleta = list(sns.color_palette(palette='Spectral', n_colors=len(list_termo)).as_hex())
     dict_color = dict(zip(list_termo, paleta))
@@ -425,8 +427,14 @@ elif options == "Thermal plants data":
     fig.update_layout(width=1000,height=600, showlegend=True,
                       xaxis=dict(tickmode='linear',dtick=1))
     fig.update_traces(textfont_size=16,textangle=0)
-    fig.show()
+    st.plotly_chart(fig)
 
 elif options == "Surface Facilities":
     st.header("Facilidades Petroleras")
-    st.markdown("""descripcion""")
+    st.markdown("""Las facilidades de superficie del centro de producción y facilidades CPF de un campo petrolero, es una 
+    estación de flujo donde se realiza el tratamiento del crudo que viene de las áreas de explotación. La producción de 
+    crudo se transporta desde los pozos hasta las estaciones, con el método de impulsión a través de un sistema de 
+    tuberías de sección circular. El proceso de tratamiento en la estación se realiza mediante una serie de 
+    sub-procesos; entre ellos tenemos separación, deshidratación, almacenamiento, bombeo, entre otros. """
+                )
+
