@@ -34,7 +34,7 @@ body {background-color: #DCE3D5;
 # Create title of web app
 st.title("CO2 Emissions App")
 
-Logo = Image.open("Resources/ESPOL.png")
+Logo = Image.open("Resources/CCUS_logo.png")
 st.sidebar.image(Logo)
 
 
@@ -216,7 +216,6 @@ if options == "Refineries data":
     df = pd.read_sql_query("SELECT* FROM R_Shushufindi", engine)
     df
     st.caption("*Base de datos sobre la Refineria Shushuindi del año 2010 al 2020.*")
-
     # GRAFICO DE BARRAS DE LOS BARRILES REFINADOS SHUSHUFINDI
     st.header("Producción de la Refinería Shushufindi 2010-2020")
     st.markdown(
@@ -372,62 +371,143 @@ elif options == "Thermal plants data":
 
     df = pd.read_sql_query("SELECT* FROM Termoelectricas_ECU", engine)
     df = df.replace("",0)
+    df = df.replace("Repsol YPF-NPF-1", "Repsol YPF-NPF")
+    df = df.replace("Repsol YPF-NPF-2", "Repsol YPF-NPF")
+    df = df.replace("Repsol YPF-NPF-3", "Repsol YPF-NPF")
+    df = df.replace("Repsol YPF-NPF-4", "Repsol YPF-NPF")
+    df = df.replace("Repsol YPF-NPF-5", "Repsol YPF-NPF")
+    df = df.replace("Shushifindi estaciףn Sur-Oeste", "Shushufindi Estación Sur-Oeste")
+    df = df.rename(columns={"aסo": "Año","termoelectrica":"Termoelectricas"})
     df
 
     st.caption(
         """*Base de datos de la energía neta producida, tipo de combustible y su cantidad, de las plantas 
-        termoeléctricas de Ecuador (2016-2020).*"""
+        Termoeléctricas de Ecuador (2016-2020).*"""
     )
+    st.header("Calculo de las emisiones de CO2")
+    st.markdown("""Con los datos proporcionados sobre: la cantidad, factor de emisión y densidad de cada tipo de 
+    combustible usado en las diferentes termoelectricas se proceda a estimar las emisiones de CO2."""
+                )
     #CONVERTIR DATAFRAME DIESEL(GALONES) DE STR A FLOAT
     df[["Diesel(galones)"]] = df[["Diesel(galones)"]].astype(float)
 
     #CALCULO DE EMISIONES CO2 POR DIESEL(GALONES)
     df[["Emisiones de CO2 causadas por Diesel (TON)"]] = (df[["Diesel(galones)"]] * 3.7854 * 0.87 / 1000) * (0.0408 * 72.6)
-    df[["termoelectrica","Emisiones de CO2 causadas por Diesel (TON)"]]
+    #df[["Termoelectricas","Emisiones de CO2 causadas por Diesel (TON)"]]
 
     # CONVERTIR DATAFRAME FUEL OIL (GALONES) DE STR A FLOAT
     df[["Fuel Oil(gal)"]] = df[["FuelOil(gal)"]].astype(float)
 
     #CALCULO DE EMISIONES CO2 POR FUEL OIL (GALONES)
     df[["Emisiones de CO2 causadas por Fuel Oil (TON)"]] = (df[["Fuel Oil(gal)"]] * 3.7854 * 0.992 / 1000) * (0.0392 * 75.5)
-    df[["termoelectrica", "Emisiones de CO2 causadas por Fuel Oil (TON)"]]
+    #df[["Termoelectricas", "Emisiones de CO2 causadas por Fuel Oil (TON)"]]
 
     # CONVERTIR DATAFRAME GAS NATURAL DE STRA A FLOAT
     df[["Gas Natural"]] = df[["GasNatural(Kpc)"]].astype(float)
 
     #CALCULO DE EMISIONES DE CO2 POR GAS NATURAL (Kpc)
     df[["Emisiones de CO2 causadas por Gas Natural (TON)"]] = (df[["Gas Natural"]] * 28316.85 * 0.000737 / 1000) * (0.0465 * 54.3)
-    df[["termoelectrica", "Emisiones de CO2 causadas por Gas Natural (TON)"]]
+    #df[["Termoelectricas", "Emisiones de CO2 causadas por Gas Natural (TON)"]]
 
     #CONVERTIR DATAFRAME CRUDO DE STR A FLOAT
     df[["Crudo"]] = df[["crudo(galones)"]].astype(float)
 
     #CALCULO DE EMISIONES DE CO2 POR CRUDO (GAL)
     df[["Emisiones de CO2 causadas por Crudo (TON)"]] = (df[["Crudo"]] * 3.7854 * 0.953 / 1000) * (0.0448 * 79.85)
-    df[["termoelectrica", "Emisiones de CO2 causadas por Crudo (TON)"]]
+    #df[["Termoelectricas", "Emisiones de CO2 causadas por Crudo (TON)"]]
 
     #EMISIONES TOTALES GENERADAS EN LA TERMOELECTRICAS (TON)
-    df["Emisiones de CO2 (TON)"] = df["Emisiones de CO2 causadas por Diesel (TON)"] + df["Emisiones de CO2 causadas por Fuel Oil (TON)"] + df["Emisiones de CO2 causadas por Gas Natural (TON)"] + df["Emisiones de CO2 causadas por Crudo (TON)"]
-    df[["termoelectrica", "Emisiones de CO2 (TON)"]]
+    df["Emisiones de CO2 (TON)"] = df["Emisiones de CO2 causadas por Diesel (TON)"] + \
+                                   df["Emisiones de CO2 causadas por Fuel Oil (TON)"] + \
+                                   df["Emisiones de CO2 causadas por Gas Natural (TON)"] + \
+                                   df["Emisiones de CO2 causadas por Crudo (TON)"]
+    df[["Termoelectricas","Año", "EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+    st.caption("*Resultado de cálculos para las emisiones de CO2 producidas en las Termoelectricas (2016-2020).*")
 
-
-    list_termo = list(set(df['termoelectrica']))
+    list_termo = list(set(df['Termoelectricas']))
     paleta = list(sns.color_palette(palette='Spectral', n_colors=len(list_termo)).as_hex())
     dict_color = dict(zip(list_termo, paleta))
 
-    fig = px.bar(df, x='termoelectrica', y='Emisiones de CO2 (TON)',
-                 color='termoelectrica',
+    fig = px.bar(df, x='Termoelectricas', y='Emisiones de CO2 (TON)',
+                 color='Termoelectricas',
                  color_discrete_map=dict_color,
-                 animation_frame='aסo',
-                 animation_group='termoelectrica',
+                 animation_frame='Año',
+                 animation_group='Termoelectricas',
                  range_y=[0, 1.2])
     fig.update_xaxes(title='Termoelectricas', visible=True)
     fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
                      visible=True, showticklabels=True)
-    fig.update_layout(width=1000,height=600, showlegend=True,
+    fig.update_layout(template="plotly_dark",width=1000,height=600, showlegend=True,
                       xaxis=dict(tickmode='linear',dtick=1))
     fig.update_traces(textfont_size=16,textangle=0)
     st.plotly_chart(fig)
+    st.caption("*Gráfico dinámico de las emisiones de CO2 producidas en las diferentes Termoelectricas (2016-2020).*")
+    amazonas=df.loc[df["Termoelectricas"]=="Amazonas"]
+    lago_agrio = df.loc[df["Termoelectricas"] == "Lago Agrio"]
+    secoya = df.loc[df["Termoelectricas"] == "Secoya"]
+    guanta = df.loc[df["Termoelectricas"] == "Guanta"]
+    cuyabeno = df.loc[df["Termoelectricas"] == "Cuyabeno"]
+    repsol = df.loc[df["Termoelectricas"] == "Repsol YPF-NPF"]
+    shushufindi = df.loc[df["Termoelectricas"] == "Shushufindi Estación Sur-Oeste"]
+    tapi = df.loc[df["Termoelectricas"] == "Tapi"]
+    pakay = df.loc[df["Termoelectricas"] == "Pakay"]
+    sacha = df.loc[df["Termoelectricas"] == "Sacha"]
+
+    st.header("Seleccionar Termoelectrica")
+    opcion_termo = st.selectbox("Elija la termoelectrica que desea ver a detalle.",
+                 ("Amazonas","Lago Agrio","Secoya","Guanta","Cuyabeno",
+                  "Repsol YPF-NPF","Shushufindi Estación Sur-Oeste",
+                  "Tapi","Pakay","Sacha"))
+    if opcion_termo =="Amazonas":
+        amazonas[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Amazonas 
+        (2016-2020)*"""
+                   )
+    elif opcion_termo=="Lago Agrio":
+        lago_agrio[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Lago Agrio 
+                (2016-2020)*"""
+                   )
+    elif opcion_termo=="Secoya":
+        secoya[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Secoya 
+                (2016-2020)*"""
+                   )
+    elif opcion_termo=="Guanta":
+        guanta[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Guanta 
+                (2016-2020)*"""
+                   )
+    elif opcion_termo=="Cuyabeno":
+        cuyabeno[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Cuyabeno 
+                (2016-2020)*"""
+                   )
+    elif opcion_termo=="Repsol YPF-NPF":
+        repsol[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Repsol YPF-NPF 
+                (2016-2020)*"""
+                   )
+    elif opcion_termo=="Shushufindi Estación Sur-Oeste":
+        shushufindi[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Shushufindi Sur-Oeste 
+                (2016-2020)*"""
+                   )
+    elif opcion_termo=="Tapi":
+        tapi[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Tapi 
+                (2016-2020)*"""
+                   )
+    elif opcion_termo=="Pakay":
+        pakay[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Pakay 
+                (2016-2020)*"""
+                   )
+    elif opcion_termo=="Sacha":
+        sacha[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Sacha 
+                (2016-2020)*"""
+                   )
 
 elif options == "Surface Facilities":
     st.header("Facilidades Petroleras")
@@ -437,4 +517,7 @@ elif options == "Surface Facilities":
     tuberías de sección circular. El proceso de tratamiento en la estación se realiza mediante una serie de 
     sub-procesos; entre ellos tenemos separación, deshidratación, almacenamiento, bombeo, entre otros. """
                 )
+    video_surface = open("resources/Surface_Facilities.mp4", "rb")
+    st.video(video_surface)
+    st.caption("*Video 4. Surface Facilities Value Chain.*")
 
