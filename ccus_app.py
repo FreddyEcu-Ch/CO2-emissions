@@ -509,7 +509,7 @@ elif options == "Thermal plants data":
         (2016-2020)*"""
                    )
 
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_ama = pd.read_sql_query("SELECT* FROM Emisiones_Amazonas", engine)
@@ -542,7 +542,7 @@ elif options == "Thermal plants data":
                 (2016-2020)*"""
                    )
 
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_lag = pd.read_sql_query("SELECT* FROM Emisiones_LagoAgrio", engine)
@@ -574,7 +574,7 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Secoya 
                 (2016-2020)*"""
                    )
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_sec = pd.read_sql_query("SELECT* FROM Emisiones_Secoya", engine)
@@ -606,7 +606,7 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Guanta 
                 (2016-2020)*"""
                    )
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_guan = pd.read_sql_query("SELECT* FROM Emisiones_Guanta", engine)
@@ -638,7 +638,7 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Cuyabeno 
                 (2016-2020)*"""
                    )
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_cuy = pd.read_sql_query("SELECT* FROM Emisiones_Cuyabeno", engine)
@@ -669,7 +669,7 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Repsol YPF-NPF 
                 (2016-2020)*"""
                    )
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_rep = pd.read_sql_query("SELECT* FROM Emisiones_Repsol", engine)
@@ -700,7 +700,7 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Shushufindi Sur-Oeste 
                 (2016-2020)*"""
                    )
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_shu = pd.read_sql_query("SELECT* FROM Emisiones_Shushufindi", engine)
@@ -732,7 +732,7 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Tapi 
                 (2016-2020)*"""
                    )
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_tapi = pd.read_sql_query("SELECT* FROM Emisiones_Tapi", engine)
@@ -763,7 +763,7 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Pakay 
                 (2016-2020)*"""
                    )
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_pakay = pd.read_sql_query("SELECT* FROM Emisiones_Pakay", engine)
@@ -794,7 +794,7 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Pakay 
                 (2016-2020)*"""
                    )
-        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
         df_sacha = pd.read_sql_query("SELECT* FROM Emisiones_Sacha", engine)
@@ -829,6 +829,7 @@ elif options == "Surface Facilities":
     tuberías de sección circular. El proceso de tratamiento en la estación se realiza mediante una serie de 
     sub-procesos; entre ellos tenemos separación, deshidratación, almacenamiento, bombeo, entre otros. """
                 )
+    st.markdown("En el **Video 4** se muestra como está conformada una facilidad petrolera.")
     video_surface = open("resources/Surface_Facilities.mp4", "rb")
     st.video(video_surface)
     st.caption("""*Video 4. Andres Torres.(23 de octubre del 2012). Pacific Rubiales - Producción de crudo 
@@ -836,3 +837,7 @@ elif options == "Surface Facilities":
                )
 
 
+
+st.markdown("***Autores:***")
+st.markdown("*Kevin Fernando Real Delgado | Student Petroleum Engineer*")
+st.markdown("*M.Sc. Freddy Carrión Maldonado | Petroleum Engineer*")
