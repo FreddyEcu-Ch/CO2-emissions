@@ -77,7 +77,9 @@ if options == "Home":
     # Load video
     video = open("resources/ccus.mp4", "rb")
     st.video(video)
-    st.caption("*Video 1. CCUS Value Chain.*")
+    st.caption("""*Video 1. Aker Carbon Capture.(9 de noviembre del 2020).CCUS - Understanding why 
+    [Video]. YouTube. Obtenido de https://www.youtube.com/watch?v=TP3qP83Ah1s*"""
+               )
 
     # OBJETIVO GENERAL
     st.header("""**Objetivo:** """)
@@ -155,8 +157,25 @@ if options == "Home":
 
     #DESCRIPCION SOBRE LOS FACTORES DE EMISION
     st.header("**Factores de Emisión**")
+    engine = create_engine("sqlite:///Data/CO2_EOR.db")
+    df = pd.read_sql_query("SELECT* FROM Propiedades_caloríficas_FE", engine)
+    df
+    st.caption("*Valores de Factor de Emisión de combustibles*")
 
+    #DESCRIPCION SOBRE PODER CALORÍFICO
+    st.header("**Poder Calorífico**")
+    engine = create_engine("sqlite:///Data/CO2_EOR.db")
+    df = pd.read_sql_query("SELECT* FROM Propiedades_caloríficas_PC", engine)
+    df
+    st.caption("*Valores de Poder Calorífico de combustibles*")
 
+    #DENSIDAD
+    st.header("**Densidad**")
+    engine = create_engine("sqlite:///Data/CO2_EOR.db")
+    df = pd.read_sql_query("SELECT* FROM Propiedades_caloríficas_Total", engine)
+    df = df.rename(columns={"Valor pho": "Valor Densidad"})
+    df[["Combustible","Valor Densidad","Densidad** (Unidad)"]]
+    st.caption("*Valores de Densidad de combustibles*")
     # CONCLUSIONES
     st.header("Conclusiones")
     st.markdown(
@@ -193,7 +212,10 @@ if options == "Refineries data":
     st.markdown("""En el **video 2** se ilustra el proceso de refinación de hidrocarburos.""")
     video_ref = open("resources/Refinería_Procesos.mp4", "rb")
     st.video(video_ref)
-    st.caption("*Video 2. Refinery Value Chain*")
+    st.caption("""*Video 2. Visio CAD.(10 de abril del 2021). Refinería - Procesos 
+        [Video]. YouTube. Obtenido de https://www.youtube.com/watch?v=K5nTsbzcRlc*"""
+               )
+
     st.markdown("""Las refinerías de petróleo emiten gases como dióxido de azufre, dióxido de nitrógeno, dióxido de 
     carbono, monóxido de carbono, metano, fluoruro de hidrógeno, dioxinas, cloro y otros contaminantes durante el 
     procesamiento químico que contribuyen al smog y la contaminación del aire."""
@@ -324,7 +346,10 @@ elif options == "Thermal plants data":
     )
     video_ter = open("resources/Termo.mp4", "rb")
     st.video(video_ter)
-    st.caption("*Video 3. Thermal Plants Value Chain*")
+    st.caption("""*Video 3. Endesa Educa.(25 de enero del 2013). Funcionamiento de una central térmica 
+            [Video]. YouTube. Obtenido de https://www.youtube.com/watch?v=Apg_aEwvzGM*"""
+               )
+
     st.markdown(
         """Las centrales térmicas convencionales como en la **Imagen 5** están compuestas de varios elementos que 
         posibilitan la transformación de los combustibles fósiles en energía eléctrica. Sus componentes principales 
@@ -519,5 +544,8 @@ elif options == "Surface Facilities":
                 )
     video_surface = open("resources/Surface_Facilities.mp4", "rb")
     st.video(video_surface)
-    st.caption("*Video 4. Surface Facilities Value Chain.*")
+    st.caption("""*Video 4. Andres Torres.(23 de octubre del 2012). Pacific Rubiales - Producción de crudo 
+                [Video]. YouTube. Obtenido de https://www.youtube.com/watch?v=3exCgdxa5CU*"""
+               )
+
 
