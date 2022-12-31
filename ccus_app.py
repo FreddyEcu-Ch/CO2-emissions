@@ -160,14 +160,14 @@ if options == "Home":
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
     df = pd.read_sql_query("SELECT* FROM Propiedades_caloríficas_FE", engine)
     df
-    st.caption("*Valores de Factor de Emisión de combustibles*")
+    st.caption("*Valores de Factor de Emisión de combustibles.*")
 
     #DESCRIPCION SOBRE PODER CALORÍFICO
     st.header("**Poder Calorífico**")
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
     df = pd.read_sql_query("SELECT* FROM Propiedades_caloríficas_PC", engine)
     df
-    st.caption("*Valores de Poder Calorífico de combustibles*")
+    st.caption("*Valores de Poder Calorífico de combustibles.*")
 
     #DENSIDAD
     st.header("**Densidad**")
@@ -244,6 +244,25 @@ if options == "Refineries data":
         """Con la ayuda de un gráfico de barras se puede observar la producción del petróleo refinado y sus variaciones 
         en los años del 2010 al 2020 en unidades de Millones de barriles (MMbbl)."""
     )
+
+    list_refi = list(set(df['año']))
+    paleta_refi = list(sns.color_palette(palette='Spectral', n_colors=len(list_refi)).as_hex())
+    dict_color_refi = dict(zip(list_refi, paleta_refi))
+
+    fig_refi = px.bar(df, x='Refineria', y='Emisiones_CO2',
+                 color='Refineria',
+                 color_discrete_map=dict_color_refi,
+                 animation_frame='año',
+                 animation_group='Refineria',
+                 range_y=[0, 1.2])
+    fig_refi.update_xaxes(title='Refineria Shushufindi', visible=True)
+    fig_refi.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                     visible=True, showticklabels=True)
+    fig_refi.update_layout(template="plotly_dark", width=1000, height=600, showlegend=True,
+                      xaxis=dict(tickmode='linear', dtick=1))
+    fig_refi.update_traces(textfont_size=16, textangle=0)
+    st.plotly_chart(fig_refi)
+
     fig1, ax = plt.subplots(figsize=(14, 8))
 
     ax.bar(df["año"], df["RefinacionBarriles"], color="#e5be01")
@@ -447,6 +466,7 @@ elif options == "Thermal plants data":
                                    df["Emisiones de CO2 causadas por Gas Natural (TON)"] + \
                                    df["Emisiones de CO2 causadas por Crudo (TON)"]
     df[["Termoelectricas","Año", "EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
+
     st.caption("*Resultado de cálculos para las emisiones de CO2 producidas en las Termoelectricas (2016-2020).*")
 
     list_termo = list(set(df['Termoelectricas']))
@@ -488,50 +508,317 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Amazonas 
         (2016-2020)*"""
                    )
+
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ama = pd.read_sql_query("SELECT* FROM Emisiones_Amazonas", engine)
+        df_ama[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_ama = list(set(df_ama['Combustible']))
+        paleta_ama = list(sns.color_palette(palette='Spectral', n_colors=len(list_ama)).as_hex())
+        dict_color_ama = dict(zip(list_ama, paleta_ama))
+
+        fig = px.bar(df_ama, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_ama,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+        usados en la Termoeléctrica Amazonas (2016-2020).*"""
+                   )
+
     elif opcion_termo=="Lago Agrio":
         lago_agrio[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Lago Agrio 
                 (2016-2020)*"""
                    )
+
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_lag = pd.read_sql_query("SELECT* FROM Emisiones_LagoAgrio", engine)
+        df_lag[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_lag = list(set(df_lag['Combustible']))
+        paleta_lag = list(sns.color_palette(palette='Spectral', n_colors=len(list_lag)).as_hex())
+        dict_color_lag = dict(zip(list_lag, paleta_lag))
+
+        fig = px.bar(df_lag, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_lag,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+                usados en la Termoeléctrica Lago Agrio (2016-2020).*"""
+                   )
+
     elif opcion_termo=="Secoya":
         secoya[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Secoya 
                 (2016-2020)*"""
                    )
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_sec = pd.read_sql_query("SELECT* FROM Emisiones_Secoya", engine)
+        df_sec[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_sec = list(set(df_sec['Combustible']))
+        paleta_sec = list(sns.color_palette(palette='Spectral', n_colors=len(list_sec)).as_hex())
+        dict_color_sec = dict(zip(list_sec, paleta_sec))
+
+        fig = px.bar(df_sec, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_sec,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+                        usados en la Termoeléctrica Secoya (2016-2020).*"""
+                   )
+
     elif opcion_termo=="Guanta":
         guanta[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Guanta 
                 (2016-2020)*"""
                    )
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_guan = pd.read_sql_query("SELECT* FROM Emisiones_Guanta", engine)
+        df_guan[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_guan = list(set(df_guan['Combustible']))
+        paleta_guan = list(sns.color_palette(palette='Spectral', n_colors=len(list_guan)).as_hex())
+        dict_color_guan = dict(zip(list_guan, paleta_guan))
+
+        fig = px.bar(df_guan, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_guan,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+                                usados en la Termoeléctrica Guanta (2016-2020).*"""
+                   )
+
     elif opcion_termo=="Cuyabeno":
         cuyabeno[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Cuyabeno 
                 (2016-2020)*"""
+                   )
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_cuy = pd.read_sql_query("SELECT* FROM Emisiones_Cuyabeno", engine)
+        df_cuy[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_cuy = list(set(df_cuy['Combustible']))
+        paleta_cuy = list(sns.color_palette(palette='Spectral', n_colors=len(list_cuy)).as_hex())
+        dict_color_cuy = dict(zip(list_cuy, paleta_cuy))
+
+        fig = px.bar(df_cuy, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_cuy,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+                                        usados en la Termoeléctrica Cuyabeno (2016-2020).*"""
                    )
     elif opcion_termo=="Repsol YPF-NPF":
         repsol[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Repsol YPF-NPF 
                 (2016-2020)*"""
                    )
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_rep = pd.read_sql_query("SELECT* FROM Emisiones_Repsol", engine)
+        df_rep[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_rep = list(set(df_rep['Combustible']))
+        paleta_rep = list(sns.color_palette(palette='Spectral', n_colors=len(list_rep)).as_hex())
+        dict_color_rep = dict(zip(list_rep, paleta_rep))
+
+        fig = px.bar(df_rep, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_rep,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+                                                usados en la Termoeléctrica Repsol YPF-NPF (2016-2020).*"""
+                   )
     elif opcion_termo=="Shushufindi Estación Sur-Oeste":
         shushufindi[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Shushufindi Sur-Oeste 
                 (2016-2020)*"""
+                   )
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_shu = pd.read_sql_query("SELECT* FROM Emisiones_Shushufindi", engine)
+        df_shu[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_shu = list(set(df_shu['Combustible']))
+        paleta_shu = list(sns.color_palette(palette='Spectral', n_colors=len(list_shu)).as_hex())
+        dict_color_shu = dict(zip(list_shu, paleta_shu))
+
+        fig = px.bar(df_shu, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_shu,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+                                                        usados en la Termoeléctrica Shushufindi Estacion Sur-Oeste 
+                                                        (2016-2020).*"""
                    )
     elif opcion_termo=="Tapi":
         tapi[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Tapi 
                 (2016-2020)*"""
                    )
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_tapi = pd.read_sql_query("SELECT* FROM Emisiones_Tapi", engine)
+        df_tapi[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_tapi = list(set(df_tapi['Combustible']))
+        paleta_tapi = list(sns.color_palette(palette='Spectral', n_colors=len(list_tapi)).as_hex())
+        dict_color_tapi = dict(zip(list_tapi, paleta_tapi))
+
+        fig = px.bar(df_tapi, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_tapi,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+        usados en la Termoeléctrica Tapi(2016-2020).*"""
+                   )
     elif opcion_termo=="Pakay":
         pakay[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Pakay 
                 (2016-2020)*"""
                    )
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_pakay = pd.read_sql_query("SELECT* FROM Emisiones_Pakay", engine)
+        df_pakay[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_pakay = list(set(df_pakay['Combustible']))
+        paleta_pakay = list(sns.color_palette(palette='Spectral', n_colors=len(list_pakay)).as_hex())
+        dict_color_pakay = dict(zip(list_pakay, paleta_pakay))
+
+        fig = px.bar(df_pakay, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_pakay,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+                usados en la Termoeléctrica Pakay (2016-2020).*"""
+                   )
     elif opcion_termo=="Sacha":
         sacha[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
-        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Sacha 
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Pakay 
                 (2016-2020)*"""
+                   )
+        st.header("Tipo de combustibles utilizados y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_sacha = pd.read_sql_query("SELECT* FROM Emisiones_Sacha", engine)
+        df_sacha[["Emisiones CO2 (TON)"]].astype(float)
+
+        list_sacha = list(set(df_sacha['Combustible']))
+        paleta_sacha = list(sns.color_palette(palette='Spectral', n_colors=len(list_sacha)).as_hex())
+        dict_color_sacha = dict(zip(list_sacha, paleta_sacha))
+
+        fig = px.bar(df_sacha, x='Combustible', y='Emisiones CO2 (TON)',
+                     color='Combustible',
+                     color_discrete_map=dict_color_sacha,
+                     animation_frame='Año',
+                     animation_group='Combustible',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Tipo de Combustible', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintos tipos de combustibles 
+                        usados en la Termoeléctrica Sacha (2016-2020).*"""
                    )
 
 elif options == "Surface Facilities":
