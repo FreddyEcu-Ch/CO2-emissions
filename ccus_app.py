@@ -422,6 +422,13 @@ elif options == "Thermal plants data":
     df = df.replace("Repsol YPF-NPF-5", "Repsol YPF-NPF")
     df = df.replace("Shushifindi estaciףn Sur-Oeste", "Shushufindi Estación Sur-Oeste")
     df = df.rename(columns={"aסo": "Año","termoelectrica":"Termoelectricas"})
+    df[["EnergiaBruta(GWH)"]] = df[["EnergiaBruta(GWH)"]].astype(float)
+    df[["FuelOil(gal)"]] = df[["FuelOil(gal)"]].astype(float)
+    df[["FuelOilTEP"]] = df[["FuelOilTEP"]].astype(float)
+    df[["GasNatural(Kpc)"]] = df[["GasNatural(Kpc)"]].astype(float)
+    df[["GasNatural(TEP)"]] = df[["GasNatural(TEP)"]].astype(float)
+    df[["crudo(galones)"]] = df[["crudo(galones)"]].astype(float)
+    df[["crudoTEP"]] = df[["crudoTEP"]].astype(float)
     df
 
     st.caption(
