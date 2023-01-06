@@ -273,7 +273,7 @@ if options == "Refineries data":
     fig_refi.update_xaxes(title='Refineria Shushufindi', visible=True)
     fig_refi.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
                      visible=True, showticklabels=True)
-    fig_refi.update_layout(template="plotly_dark", width=1000, height=600, showlegend=True,
+    fig_refi.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
                       xaxis=dict(tickmode='linear', dtick=1))
     fig_refi.update_traces(textfont_size=16, textangle=0)
     st.plotly_chart(fig_refi)
@@ -326,6 +326,30 @@ if options == "Refineries data":
         compararlas para saber cuantos barriles refinados corresponden a cada tonelada de CO2 emitida."""
     )
 
+    engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+    df_refi = pd.read_sql_query("SELECT* FROM Refineria_Shushufindi", engine)
+    df_refi[["Valor"]].astype(float)
+
+    list_refi = list(set(df_refi['Tipo resultado']))
+    paleta_refi = list(sns.color_palette(palette='Spectral', n_colors=len(list_refi)).as_hex())
+    dict_color_refi = dict(zip(list_refi, paleta_refi))
+
+    fig_refi = px.bar(df_refi, x='Tipo resultado', y='Valor',
+                      color='Tipo resultado',
+                      color_discrete_map=dict_color_refi,
+                      animation_frame='Año',
+                      animation_group='Tipo resultado',
+                      range_y=[0, 1.2])
+    fig_refi.update_xaxes(title='Producción', visible=True)
+    fig_refi.update_yaxes(autorange=True, title='',
+                          visible=True, showticklabels=True)
+    fig_refi.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                           xaxis=dict(tickmode='linear', dtick=1))
+    fig_refi.update_traces(textfont_size=16, textangle=0)
+    st.plotly_chart(fig_refi)
+    st.caption("""Gráfico dinámico de los Barriles refinados y las Emisiones de CO2 en la Refinería Shushufindi."""
+               )
     formatter = ticker.EngFormatter()
     fig3 = plt.figure(figsize=(12, 8), edgecolor="black")
     ax1 = fig3.add_subplot()
