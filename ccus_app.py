@@ -157,6 +157,11 @@ if options == "Home":
 
     #DESCRIPCION SOBRE LOS FACTORES DE EMISION
     st.header("**Factores de Emisión**")
+    st.markdown("""El Factor de emisión se refiere a un número que intenta relacionar la cantidad de contaminantes 
+    liberados a la atmósfera con las actividades involucradas en la liberación del contaminante. Estas variables suelen 
+    expresarse como la masa del contaminante dividida por unidades de peso, volumen, longitud o tiempo. (FACTORES DE 
+    EMISIÓN – Observatorio Ambiental de Cartagena de Indias, 2021)"""
+                )
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
     df = pd.read_sql_query("SELECT* FROM Propiedades_caloríficas_FE", engine)
     df
@@ -164,6 +169,11 @@ if options == "Home":
 
     #DESCRIPCION SOBRE PODER CALORÍFICO
     st.header("**Poder Calorífico**")
+    st.markdown("""Poder calorífico se refiere al calor generado por un material o combustible por kilogramo o metro 
+    cúbico de la sustancia después de la oxidación completa. El valor calorífico se calcula sistemáticamente en función 
+    de la masa o el volumen del combustible oxidado (quemado). Cuanto mayor es el poder calorífico del combustible, 
+    menos se utiliza. (¿Qué Es El Poder Calorífico? - Vaillant, 2022)"""
+                )
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
     df = pd.read_sql_query("SELECT* FROM Propiedades_caloríficas_PC", engine)
     df
@@ -171,6 +181,11 @@ if options == "Home":
 
     #DENSIDAD
     st.header("**Densidad**")
+    st.markdown("""Densidad es la relación entre la masa de una sustancia y el volumen que ocupa (la misma sustancia). 
+    Las unidades de masa más utilizadas son kg/l o g/ml para líquidos y gases y kg/m3 o g/cm3 para sólidos. Cuando 
+    hablamos de la densidad de una sustancia, estamos hablando de su peso en relación con su tamaño. (Glosario: 
+    Densidad, 2001)"""
+                )
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
     df = pd.read_sql_query("SELECT* FROM Propiedades_caloríficas_Total", engine)
     df = df.rename(columns={"Valor pho": "Valor Densidad"})
