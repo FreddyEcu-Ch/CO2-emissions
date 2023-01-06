@@ -531,6 +531,32 @@ elif options == "Thermal plants data":
         (2016-2020)*"""
                    )
 
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_Amazonas", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+        Amazonas (2016-2020)."""
+                   )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
@@ -563,7 +589,32 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Lago Agrio 
                 (2016-2020)*"""
                    )
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_LagoAgrio", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+                Lago Agrio (2016-2020)."""
+                   )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
@@ -595,6 +646,32 @@ elif options == "Thermal plants data":
         secoya[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Secoya 
                 (2016-2020)*"""
+                   )
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_Secoya", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+                        Secoya (2016-2020)."""
                    )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
@@ -628,6 +705,32 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Guanta 
                 (2016-2020)*"""
                    )
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_Guanta", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+                                Guanta (2016-2020)."""
+                   )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
@@ -660,6 +763,32 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Cuyabeno 
                 (2016-2020)*"""
                    )
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_Cuyabeno", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+                        Cuyabeno (2016-2020)."""
+                   )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
@@ -691,6 +820,32 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Repsol YPF-NPF 
                 (2016-2020)*"""
                    )
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_Repsol", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+                                Repsol YPF-NPF (2016-2020)."""
+                   )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
@@ -721,6 +876,32 @@ elif options == "Thermal plants data":
         shushufindi[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Shushufindi Sur-Oeste 
                 (2016-2020)*"""
+                   )
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_Shushufindi", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+                                        Shushufindi Sur-Oeste (2016-2020)."""
                    )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
@@ -754,6 +935,32 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Tapi 
                 (2016-2020)*"""
                    )
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_Tapi", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+                            Tapi (2016-2020)."""
+                   )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
@@ -785,6 +992,32 @@ elif options == "Thermal plants data":
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Pakay 
                 (2016-2020)*"""
                    )
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_Pakay", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+                                    Pakay (2016-2020)."""
+                   )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
 
@@ -815,6 +1048,32 @@ elif options == "Thermal plants data":
         sacha[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
         st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Pakay 
                 (2016-2020)*"""
+                   )
+        st.subheader("Energía Neta vs Emisiones de CO2")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_ener = pd.read_sql_query("SELECT* FROM Energia_Emisiones_Sacha", engine)
+        df_ener[["Valor"]].astype(float)
+
+        list_ener = list(set(df_ener['Tipo resultado']))
+        paleta_ener = list(sns.color_palette(palette='Spectral', n_colors=len(list_ener)).as_hex())
+        dict_color_ener = dict(zip(list_ener, paleta_ener))
+
+        fig_ener = px.bar(df_ener, x='Tipo resultado', y='Valor',
+                          color='Tipo resultado',
+                          color_discrete_map=dict_color_ener,
+                          animation_frame='Año',
+                          animation_group='Tipo resultado',
+                          range_y=[0, 1.2])
+        fig_ener.update_xaxes(title='Producción', visible=True)
+        fig_ener.update_yaxes(autorange=True, title='',
+                              visible=True, showticklabels=True)
+        fig_ener.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_ener.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_ener)
+        st.caption("""Gráfico dinámico de la Energía Neta producida y las Emisiones de CO2 en la Termoeléctrica 
+                            Sacha (2016-2020)."""
                    )
         st.subheader("Tipo de combustibles utilizados y sus Emisiones")
         engine = create_engine("sqlite:///Data/CO2_EOR.db")
