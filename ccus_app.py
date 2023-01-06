@@ -32,7 +32,7 @@ body {background-color: #DCE3D5;
 )
 
 # Create title of web app
-st.title("CO2 Emissions App")
+st.title("CO2 Emissions App :computer:")
 
 Logo = Image.open("Resources/CCUS_logo.png")
 st.sidebar.image(Logo)
