@@ -34,7 +34,7 @@ body {background-color: #DCE3D5;
 # Create title of web app
 st.title("CO2 Emissions App :computer:")
 
-Logo = Image.open("Resources/CCUS_logo.png")
+Logo = Image.open("Resources/icon_2.png")
 st.sidebar.image(Logo)
 
 
@@ -280,7 +280,7 @@ if options == "Refineries data":
 
     fig1, ax = plt.subplots(figsize=(14, 8))
 
-    ax.bar(df["año"], df["RefinacionBarriles"], color="#e5be01")
+    ax.bar(df["año"], df["RefinacionBarriles"], color="black")
     ax.set_xlabel("Year", fontsize=14)
     ax.set_ylabel("Oil refined (MMbbl)", fontsize=14)
     ax.set_title(
@@ -359,7 +359,7 @@ if options == "Refineries data":
         x="año",
         y="RefinacionBarriles",
         width=0.4,
-        color="#e5be01",
+        color="black",
         ax=ax1,
         align="center",
         label="Oil refined",
