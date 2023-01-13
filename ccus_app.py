@@ -17,7 +17,7 @@ from streamlit_option_menu import option_menu
 
 # Desing of the app
 icon = Image.open("resources/icon.png")
-st.set_page_config(page_title="CCUS APP",page_icon=icon)
+st.set_page_config(page_title="QFEI",page_icon=icon)
 st.markdown(
     """
 <style>
@@ -1070,7 +1070,7 @@ elif options == "Thermal plants data":
                    )
     elif opcion_termo=="Sacha":
         sacha[["Termoelectricas","Año","EnergiaBruta(MWH)","Emisiones de CO2 (TON)"]]
-        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Pakay 
+        st.caption("""*Resultado de Enegía Neta y Emisiones de CO2 producidas en la Termoelectrica Sacha 
                 (2016-2020)*"""
                    )
         st.subheader("Energía Neta vs Emisiones de CO2")
