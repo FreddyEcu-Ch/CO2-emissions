@@ -235,24 +235,69 @@ if options == "Refineries data":
     carbono, monóxido de carbono, metano, fluoruro de hidrógeno, dioxinas, cloro y otros contaminantes durante el 
     procesamiento químico que contribuyen al smog y la contaminación del aire."""
                 )
-    # LLAMADO DE LA DATA REFINERIA SHUSHUFINDI
-    st.header("Refineria Shushufindi ")
+    # LLAMADO DE LA DATA DE LAS REFINERIAS
+    st.header("Base de datos de las Refinerias en Ecuador 2010-2020")
     st.markdown(
-        """La Refinería Shushufindi abastece de gasolina y diésel a las provincias de Sucumbíos, Orellana y Napo, y de 
-        GLP a la ciudad de Quito y su zona de influencia. La capacidad de procesamiento de la Refinería Shushufindi, es 
-        de 20 mil barriles de crudo por día."""
+        """Para la sección de Refinerías contamos con los datos de 3 Refinerías que son: Esmeraldas, Libertad y 
+        Shushufindi; la capacidad con la que opera cada refinería es: 110 mil bbl/día, 45 mil bbl/día y 20 mil bbl/día 
+        respectivamente."""
     )
     st.markdown(
-        """A continuación se presenta una base de datos recopilada de entidades gubernamentales sobre las emisiones de 
-        CO2 consecuencia de las actividades de refinación del crudo que se maneja dentro de esta fuente de emision 
-        estacionaria."""
+        """A continuación se presenta una base de datos recopilada de entidades gubernamentales la cantidad de barriles
+        refinados en las diferentes refinerías del Ecuador entre los años 2010 al 2020."""
     )
+
+    engine_ref = create_engine("sqlite:///Data/CO2_EOR.db")
+
+    df_ref = pd.read_sql_query("SELECT* FROM Refinerias_ECU", engine_ref)
+    df_ref[["Barriles Refinados"]] = df_ref[["Barriles Refinados"]].astype(float)
+    df_ref
+    st.caption("*Base de datos sobre las Refinerias del año 2010 al 2020.*")
+
+    st.header("Cálculo de las Emisiones de CO2")
+    st.markdown("""En base a las etapas de: venteo, quemado y fugitivas se realizaron los cálculos para las emisiones 
+            de CO2 utilizando los factores de emisioón de cada etapa en base a la capacidad de refinación de barriles 
+            de cada una de las plantas.""")
+    #EMISIONES DE CO2 POR VENTEO
+    df_ref[["E. Venteo (TCO2)"]] = df_ref[["Barriles Refinados"]]*0.0279809
+
+    #EMISIONES DE CO2 POR QUEMADO
+    df_ref[["E. Quemado (TCO2)"]] = df_ref[["Barriles Refinados"]]*0.00168521
+
+    #EMISIONES DE CO2 FUGITIVAS
+    df_ref[["E. FUGITIVAS (TCO2)"]] = df_ref[["Barriles Refinados"]]*0.0000000176470
+
+    #EMISIONES TOTALES EN LAS REFINERIAS
+    df_ref["Emisiones Totales de CO2 (Ton)"] = df_ref["E. Venteo (TCO2)"] + \
+                                             df_ref["E. Quemado (TCO2)"] + \
+                                            df_ref["E. FUGITIVAS (TCO2)"]
+    df_ref[["Refinerias","Año","E. Venteo (TCO2)","E. Quemado (TCO2)","E. FUGITIVAS (TCO2)",
+            "Emisiones Totales de CO2 (Ton)"]]
+    st.caption("""*Resultados del cálculos de las emisiones de CO2 producidas en las Refinerias entre los años 2010 al 
+                2020.*""")
+
+    list_refineria = list(set(df_ref['Refinerias']))
+    paleta_refineria = list(sns.color_palette(palette='Spectral', n_colors=len(list_refineria)).as_hex())
+    dict_color_refineria = dict(zip(list_refineria, paleta_refineria))
+
+    fig_refineria = px.bar(df_ref, x='Refinerias', y='Emisiones Totales de CO2 (Ton)',
+                 color='Refinerias',
+                 color_discrete_map=dict_color_refineria,
+                 animation_frame='Año',
+                 animation_group='Refinerias',
+                 range_y=[0, 1.2])
+    fig_refineria.update_xaxes(title='Refinerias', visible=True)
+    fig_refineria.update_yaxes(autorange=True, title='Emisiones Totales de CO2 (TON)',
+                     visible=True, showticklabels=True)
+    fig_refineria.update_layout(template="plotly_dark", width=1000, height=600, showlegend=True,
+                      xaxis=dict(tickmode='linear', dtick=1))
+    fig_refineria.update_traces(textfont_size=16, textangle=0)
+    st.plotly_chart(fig_refineria)
+    st.caption("*Gráfico dinámico de las emisiones de CO2 producidas en las diferentes Refinerias (2010-2020).*")
 
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
-
     df = pd.read_sql_query("SELECT* FROM R_Shushufindi", engine)
-    df
-    st.caption("*Base de datos sobre la Refineria Shushuindi del año 2010 al 2020.*")
+
     # GRAFICO DE BARRAS DE LOS BARRILES REFINADOS SHUSHUFINDI
     st.header("Producción de la Refinería Shushufindi 2010-2020")
     st.markdown(
@@ -474,7 +519,7 @@ elif options == "Thermal plants data":
         """*Base de datos de la energía neta producida, tipo de combustible y su cantidad, de las plantas 
         Termoeléctricas de Ecuador (2016-2020).*"""
     )
-    st.header("Calculo de las emisiones de CO2")
+    st.header("Calculo de las Emisiones de CO2")
     st.markdown("""Con los datos proporcionados sobre: la cantidad, factor de emisión y densidad de cada tipo de 
     combustible usado en las diferentes termoelectricas se proceda a estimar las emisiones de CO2."""
                 )
