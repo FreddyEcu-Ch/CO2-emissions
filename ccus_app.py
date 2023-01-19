@@ -295,6 +295,108 @@ if options == "Refineries data":
     st.plotly_chart(fig_refineria)
     st.caption("*Gráfico dinámico de las emisiones de CO2 producidas en las diferentes Refinerias (2010-2020).*")
 
+    esmeraldas = df_ref.loc[df_ref["Refinerias"] == "Esmeraldas"]
+    libertad = df_ref.loc[df_ref["Refinerias"] == "Libertad"]
+    shushufindi = df_ref.loc[df_ref["Refinerias"] == "Shushufindi"]
+    #SELECCION DE LAS REFINERIAS
+    st.header("Seleccionar Refinerías")
+    opcion_refi = st.selectbox("Elija la refinería que desea ver a detalle.",
+                                ("Esmeraldas", "Libertad", "Shushufindi"))
+    if opcion_refi == "Esmeraldas":
+        esmeraldas[["Refinerias","Año","Barriles Refinados","Emisiones Totales de CO2 (Ton)"]]
+        st.caption("""*Resultado de Barriles Refinados y Emisiones de CO2 producidas en la Refinería Esmeraldas 
+                (2010-2020).*"""
+                   )
+        st.subheader("Etapas y sus Emisiones")
+        engine = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_esme = pd.read_sql_query("SELECT* FROM Emisiones_R_Esmeraldas", engine)
+        df_esme[["Emisiones de CO2 (Ton)"]].astype(float)
+
+        list_esme = list(set(df_esme['Etapa']))
+        paleta_esme = list(sns.color_palette(palette='Spectral', n_colors=len(list_esme)).as_hex())
+        dict_color_esme = dict(zip(list_esme, paleta_esme))
+
+        fig_esme = px.bar(df_esme, x='Etapa', y='Emisiones de CO2 (Ton)',
+                     color='Etapa',
+                     color_discrete_map=dict_color_esme,
+                     animation_frame='Año',
+                     animation_group='Etapa',
+                     range_y=[0, 1.2])
+        fig_esme.update_xaxes(title='Tipos de Emisiones', visible=True)
+        fig_esme.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig_esme.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig_esme.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_esme)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintas etapas en la Refinería 
+                Esmeraldas (2010-2020).*"""
+                   )
+    elif opcion_refi == "Libertad":
+        libertad[["Refinerias", "Año", "Barriles Refinados", "Emisiones Totales de CO2 (Ton)"]]
+        st.caption("""*Resultado de Barriles Refinados y Emisiones de CO2 producidas en la Refinería Libertad 
+                        (2010-2020).*"""
+                   )
+        st.subheader("Etapas y sus Emisiones")
+        engine_lib = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_lib = pd.read_sql_query("SELECT* FROM Emisiones_R_Libertad", engine_lib)
+        df_lib[["Emisiones de CO2 (Ton)"]].astype(float)
+
+        list_lib = list(set(df_lib['Etapa']))
+        paleta_lib = list(sns.color_palette(palette='Spectral', n_colors=len(list_lib)).as_hex())
+        dict_color_lib = dict(zip(list_lib, paleta_lib))
+
+        fig_lib = px.bar(df_lib, x='Etapa', y='Emisiones de CO2 (Ton)',
+                          color='Etapa',
+                          color_discrete_map=dict_color_lib,
+                          animation_frame='Año',
+                          animation_group='Etapa',
+                          range_y=[0, 1.2])
+        fig_lib.update_xaxes(title='Tipos de Emisiones', visible=True)
+        fig_lib.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                              visible=True, showticklabels=True)
+        fig_lib.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_lib.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_lib)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintas etapas en la Refinería 
+                        Libertad (2010-2020).*"""
+                   )
+
+    elif opcion_refi == "Shushufindi":
+        shushufindi[["Refinerias", "Año", "Barriles Refinados", "Emisiones Totales de CO2 (Ton)"]]
+        st.caption("""*Resultado de Barriles Refinados y Emisiones de CO2 producidas en la Refinería Shushufinfi 
+                        (2010-2020).*"""
+                   )
+        st.subheader("Etapas y sus Emisiones")
+        engine_shu = create_engine("sqlite:///Data/CO2_EOR.db")
+
+        df_shu = pd.read_sql_query("SELECT* FROM Emisiones_R_Shushufindi", engine_shu)
+        df_shu[["Emisiones de CO2 (Ton)"]].astype(float)
+
+        list_shu = list(set(df_shu['Etapa']))
+        paleta_shu = list(sns.color_palette(palette='Spectral', n_colors=len(list_shu)).as_hex())
+        dict_color_shu = dict(zip(list_shu, paleta_shu))
+
+        fig_shu = px.bar(df_shu, x='Etapa', y='Emisiones de CO2 (Ton)',
+                          color='Etapa',
+                          color_discrete_map=dict_color_shu,
+                          animation_frame='Año',
+                          animation_group='Etapa',
+                          range_y=[0, 1.2])
+        fig_shu.update_xaxes(title='Tipos de Emisiones', visible=True)
+        fig_shu.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                              visible=True, showticklabels=True)
+        fig_shu.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                               xaxis=dict(tickmode='linear', dtick=1))
+        fig_shu.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_shu)
+        st.caption("""*Gráfico dinámico de las emisiones de CO2 producidas por los distintas etapas en la Refinería 
+                        Shushufindi (2010-2020).*"""
+                   )
+
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
     df = pd.read_sql_query("SELECT* FROM R_Shushufindi", engine)
 
@@ -437,6 +539,7 @@ if options == "Refineries data":
     ax1.set_ylim(0, 10e6)
     st.pyplot(fig3)
     st.caption("*Comparación de la producción con las emisiones de CO2 (2010-2020).*")
+
 
 elif options == "Thermal plants data":
 
