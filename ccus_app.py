@@ -34,7 +34,7 @@ body {background-color: #DCE3D5;
 # Create title of web app
 st.title("CO2 Emissions App :computer:")
 
-Logo = Image.open("Resources/icon_2.png")
+Logo = Image.open("resources/icon_2.png")
 st.sidebar.image(Logo)
 
 
