@@ -48,6 +48,7 @@ with st.sidebar:
             "Refineries data",
             "Thermal plants data",
             "Surface Facilities",
+            "Upload File",
         ],
         icons=["house", "bar-chart", "tv", "calculator"],
     )
@@ -256,7 +257,7 @@ if options == "Refineries data":
 
     st.header("Cálculo de las Emisiones de CO2")
     st.markdown("""En base a las etapas de: venteo, quemado y fugitivas se realizaron los cálculos para las emisiones 
-            de CO2 utilizando los factores de emisioón de cada etapa en base a la capacidad de refinación de barriles 
+            de CO2 utilizando los factores de emisión de cada etapa en base a la capacidad de refinación de barriles 
             de cada una de las plantas.""")
     #EMISIONES DE CO2 POR VENTEO
     df_ref[["E. Venteo (TCO2)"]] = df_ref[["Barriles Refinados"]]*0.0279809
@@ -1289,6 +1290,71 @@ elif options == "Surface Facilities":
                 [Video]. YouTube. Obtenido de https://www.youtube.com/watch?v=3exCgdxa5CU*"""
                )
 
+elif options == "Upload File":
+    st.header("Cargar Datos para Analizar")
+    st.markdown("""En esta sección podrá subir sus datos para calcular la emisiones que se producen en la industria
+    que se ecoja.""")
+    opcion_archivos = st.selectbox("Elija el tipo de Industria:",
+                                ("Refinería", "Planta Termoeléctrica"))
+    if opcion_archivos == "Refinería":
+        file = st.file_uploader("Cargue su docmento csv:")
+        df = pd.read_csv(file, sep=',', encoding='latin-1')
+        st.subheader("**Los datos cargados son:**")
+        st.dataframe(df)
+        st.header("Cálculo de las Emisiones de CO2")
+        st.markdown("""En base a las etapas de: venteo, quemado y fugitivas se realizaron los cálculos para las 
+        emisiones de CO2 utilizando los factores de emisión de cada etapa para una refinería con una capacidad 
+        mázxima de 250 000 bbl/d.""")
+        # EMISIONES DE CO2 POR VENTEO
+        df[["E. Venteo (TCO2)"]] = df[["Barriles Refinados"]] * 0.0279809
+
+        # EMISIONES DE CO2 POR QUEMADO
+        df[["E. Quemado (TCO2)"]] = df[["Barriles Refinados"]] * 0.00168521
+
+        # EMISIONES DE CO2 FUGITIVAS
+        df[["E. FUGITIVAS (TCO2)"]] = df[["Barriles Refinados"]] * 0.0000000176470
+
+        # EMISIONES TOTALES EN LAS REFINERIAS
+        df["Emisiones Totales de CO2 (Ton)"] = df["E. Venteo (TCO2)"] + \
+                                                   df["E. Quemado (TCO2)"] + \
+                                                   df["E. FUGITIVAS (TCO2)"]
+        df[["Refinerias", "Año", "E. Venteo (TCO2)", "E. Quemado (TCO2)", "E. FUGITIVAS (TCO2)",
+                "Emisiones Totales de CO2 (Ton)"]]
+
+
+    elif opcion_archivos == "Planta Termoeléctrica":
+        file = st.file_uploader("Cargue su docmento csv:")
+        df = pd.read_csv(file, sep=',', encoding='latin-1')
+        st.subheader("**Los datos cargados son:**")
+        st.dataframe(df)
+        df[["Energia Neta (MWH)"]] = df[["Energia Neta (MWH)"]].astype(float)
+        df[["Diesel (gal)"]] = df[["Diesel (gal)"]].astype(float)
+        df[["Fuel Oil (gal)"]] = df[["Fuel Oil (gal)"]].astype(float)
+        df[["Gas natural (Kpc)"]] = df[["Gas natural (Kpc)"]].astype(float)
+        df[["Crudo (gal)"]] = df[["Crudo (gal)"]].astype(float)
+
+        # CALCULO DE EMISIONES CO2 POR DIESEL(GALONES)
+        df[["Emisiones de CO2 causadas por Diesel (TON)"]] = (df[["Diesel (gal)"]] * 3.7854 * 0.87 / 1000) * (
+                    0.0408 * 72.6)
+
+        # CALCULO DE EMISIONES CO2 POR FUEL OIL (GALONES)
+        df[["Emisiones de CO2 causadas por Fuel Oil (TON)"]] = (df[["Fuel Oil (gal)"]] * 3.7854 * 0.992 / 1000) * (
+                    0.0392 * 75.5)
+
+        # CALCULO DE EMISIONES DE CO2 POR GAS NATURAL (Kpc)
+        df[["Emisiones de CO2 causadas por Gas Natural (TON)"]] = (df[["Gas natural (Kpc)"]] * 28316.85 * 0.000737 / 1000) * (
+                    0.0465 * 54.3)
+
+        # CALCULO DE EMISIONES DE CO2 POR CRUDO (GAL)
+        df[["Emisiones de CO2 causadas por Crudo (TON)"]] = (df[["Crudo (gal)"]] * 3.7854 * 0.953 / 1000) * (0.0448 * 79.85)
+        # df[["Termoelectricas", "Emisiones de CO2 causadas por Crudo (TON)"]]
+
+        # EMISIONES TOTALES GENERADAS EN LA TERMOELECTRICAS (TON)
+        df["Emisiones de CO2 (TON)"] = df["Emisiones de CO2 causadas por Diesel (TON)"] + \
+                                       df["Emisiones de CO2 causadas por Fuel Oil (TON)"] + \
+                                       df["Emisiones de CO2 causadas por Gas Natural (TON)"] + \
+                                       df["Emisiones de CO2 causadas por Crudo (TON)"]
+        df[["Termoelectrica", "Año", "Energia Neta (MWH)", "Emisiones de CO2 (TON)"]]
 
 
 st.markdown("***Autores:***")
