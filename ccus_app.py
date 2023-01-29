@@ -17,7 +17,7 @@ from streamlit_option_menu import option_menu
 
 # Desing of the app
 icon = Image.open("resources/icon.png")
-st.set_page_config(page_title="QFEI",page_icon=icon)
+st.set_page_config(page_title="QEI",page_icon=icon)
 st.markdown(
     """
 <style>
