@@ -1349,7 +1349,7 @@ elif options == "Upload File":
         fig_refineria.update_xaxes(title='Refinerias', visible=True)
         fig_refineria.update_yaxes(autorange=True, title='Emisiones Totales de CO2 (TON)',
                                    visible=True, showticklabels=True)
-        fig_refineria.update_layout(template="plotly_dark", width=600, height=600, showlegend=True,
+        fig_refineria.update_layout(template="plotly_dark", width=700, height=600, showlegend=True,
                                     xaxis=dict(tickmode='linear', dtick=1))
         fig_refineria.update_traces(textfont_size=16, textangle=0)
         st.plotly_chart(fig_refineria)
