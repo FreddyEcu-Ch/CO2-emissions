@@ -1297,14 +1297,30 @@ elif options == "Upload File":
     opcion_archivos = st.selectbox("Elija el tipo de Industria:",
                                 ("Refinería", "Planta Termoeléctrica"))
     if opcion_archivos == "Refinería":
+        st.markdown("""Para que el aplicativo pueda leer de manera correcta sus archivos tiene que seguir los siguientes
+        pasos:""")
+        st.markdown("""-Crear un archivo *xlm* donde en la la primera fila se encuentre el nombre de los parámetros:
+        Refinerias, Localidad, Longitud, Latitud, Año y Barriles Refinados.""")
+        st.markdown("""-Llenar los datos en orden según los años (ascendente o descendentes).""")
+        st.markdown("""-Para valores decimales no se usarán comas, en su lugar debe escribirlos con puntos.""")
+        st.markdown("""-En caso de no contar con datos numéricos no dejar en blanco, en su lugar poner el valor 
+        cero.""")
+        st.markdown("""-Convertir el archivo *xlm* en formato *csv* (separado por comas).""")
+        st.markdown("""A modo de ejemplo se presenta el formato en el que debe ser creado el archivo *xlm*.""")
+        image_ejemplo = Image.open("resources/Plantilla_refineria.png")
+        st.image(image_ejemplo)
+        st.markdown("""El archivo en formato *csv* (separado por comas) debe tener el siguiente formado:""")
+        image_ejemplo2 = Image.open("resources/Plantilla_refineria_comas.png")
+        st.image(image_ejemplo2)
+        st.subheader("""Espacio para cargar sus datos.""")
         file = st.file_uploader("Cargue su docmento csv:")
         df = pd.read_csv(file, sep=',', encoding='latin-1')
         st.subheader("**Los datos cargados son:**")
         st.dataframe(df)
-        st.header("Cálculo de las Emisiones de CO2")
+        st.subheader("Cálculo de las Emisiones de CO2")
         st.markdown("""En base a las etapas de: venteo, quemado y fugitivas se realizaron los cálculos para las 
         emisiones de CO2 utilizando los factores de emisión de cada etapa para una refinería con una capacidad 
-        mázxima de 250 000 bbl/d.""")
+        máxima de 250 000 bbl/d.""")
         # EMISIONES DE CO2 POR VENTEO
         df[["E. Venteo (TCO2)"]] = df[["Barriles Refinados"]] * 0.0279809
 
@@ -1323,10 +1339,30 @@ elif options == "Upload File":
 
 
     elif opcion_archivos == "Planta Termoeléctrica":
+        st.markdown("""Para que el aplicativo pueda leer de manera correcta sus archivos tiene que seguir los siguientes
+                pasos:""")
+        st.markdown("""-Crear un archivo *xlm* donde en la la primera fila se encuentre el nombre de los parámetros:
+                Termoelectrica, Año, Energia Neta (MWH), Diesel (gal), Fuel Oil (gal), Gas Natural (Kpc), 
+                Crudo (gal).""")
+        st.markdown("""-Llenar los datos en orden según los años (ascendente o descendentes).""")
+        st.markdown("""-Para valores decimales no se usarán comas, en su lugar debe escribirlos con puntos.""")
+        st.markdown("""-En caso de no contar con datos numéricos no dejar en blanco, en su lugar poner el valor 
+        cero.""")
+        st.markdown("""-Convertir el archivo *xlm* en formato *csv* (separado por comas).""")
+        st.markdown("""A modo de ejemplo se presenta el formato en el que debe ser creado el archivo *xlm*.""")
+        image_ejemplo = Image.open("resources/Plantilla_termo.png")
+        st.image(image_ejemplo)
+        st.markdown("""El archivo en formato *csv* (separado por comas) debe tener el siguiente formado:""")
+        image_ejemplo2 = Image.open("resources/Plantilla_termo_comas.png")
+        st.image(image_ejemplo2)
+        st.subheader("""Espacio para cargar sus datos.""")
         file = st.file_uploader("Cargue su docmento csv:")
         df = pd.read_csv(file, sep=',', encoding='latin-1')
         st.subheader("**Los datos cargados son:**")
         st.dataframe(df)
+        st.subheader("Cálculo de las Emisiones de CO2")
+        st.markdown("""Se realizó el cálculo de las emisiones de CO2 en base al tipo y cantidad de combustible
+        utilizado en las termoeléctricas.""")
         df[["Energia Neta (MWH)"]] = df[["Energia Neta (MWH)"]].astype(float)
         df[["Diesel (gal)"]] = df[["Diesel (gal)"]].astype(float)
         df[["Fuel Oil (gal)"]] = df[["Fuel Oil (gal)"]].astype(float)
