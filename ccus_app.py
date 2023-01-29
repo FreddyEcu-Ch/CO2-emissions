@@ -1336,6 +1336,23 @@ elif options == "Upload File":
                                                    df["E. FUGITIVAS (TCO2)"]
         df[["Refinerias", "Año", "E. Venteo (TCO2)", "E. Quemado (TCO2)", "E. FUGITIVAS (TCO2)",
                 "Emisiones Totales de CO2 (Ton)"]]
+        list_ref = list(set(df['Refinerias']))
+        paleta_ref = list(sns.color_palette(palette='Spectral', n_colors=len(list_ref)).as_hex())
+        dict_color_ref = dict(zip(list_ref, paleta_ref))
+
+        fig_refineria = px.bar(df, x='Refinerias', y='Emisiones Totales de CO2 (Ton)',
+                               color='Refinerias',
+                               color_discrete_map=dict_color_ref,
+                               animation_frame='Año',
+                               animation_group='Refinerias',
+                               range_y=[0, 1.2])
+        fig_refineria.update_xaxes(title='Refinerias', visible=True)
+        fig_refineria.update_yaxes(autorange=True, title='Emisiones Totales de CO2 (TON)',
+                                   visible=True, showticklabels=True)
+        fig_refineria.update_layout(template="plotly_dark", width=600, height=600, showlegend=True,
+                                    xaxis=dict(tickmode='linear', dtick=1))
+        fig_refineria.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig_refineria)
 
 
     elif opcion_archivos == "Planta Termoeléctrica":
@@ -1391,6 +1408,24 @@ elif options == "Upload File":
                                        df["Emisiones de CO2 causadas por Gas Natural (TON)"] + \
                                        df["Emisiones de CO2 causadas por Crudo (TON)"]
         df[["Termoelectrica", "Año", "Energia Neta (MWH)", "Emisiones de CO2 (TON)"]]
+
+        list_ter = list(set(df['Termoelectrica']))
+        paleta = list(sns.color_palette(palette='Spectral', n_colors=len(list_ter)).as_hex())
+        dict_color = dict(zip(list_ter, paleta))
+
+        fig = px.bar(df, x='Termoelectrica', y='Emisiones de CO2 (TON)',
+                     color='Termoelectrica',
+                     color_discrete_map=dict_color,
+                     animation_frame='Año',
+                     animation_group='Termoelectrica',
+                     range_y=[0, 1.2])
+        fig.update_xaxes(title='Termoelectrica', visible=True)
+        fig.update_yaxes(autorange=True, title='Emisiones de CO2 (TON)',
+                         visible=True, showticklabels=True)
+        fig.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
+                          xaxis=dict(tickmode='linear', dtick=1))
+        fig.update_traces(textfont_size=16, textangle=0)
+        st.plotly_chart(fig)
 
 
 st.markdown("***Autores:***")
