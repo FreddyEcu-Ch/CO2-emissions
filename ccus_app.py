@@ -399,7 +399,7 @@ if options == "Refineries data":
                    )
 
     engine = create_engine("sqlite:///Data/CO2_EOR.db")
-    df = pd.read_sql_query("SELECT* FROM R_Shushufindi", engine)
+    df = pd.read_sql_query("SELECT* FROM R_Esmeraldas", engine)
 
     # GRAFICO DE BARRAS DE LOS BARRILES REFINADOS SHUSHUFINDI
     st.header("Producción de la Refinería Shushufindi 2010-2020")
@@ -432,19 +432,19 @@ if options == "Refineries data":
     ax.set_xlabel("Year", fontsize=14)
     ax.set_ylabel("Oil refined (MMbbl)", fontsize=14)
     ax.set_title(
-        "Oil refined of the refinery Sushufindi",
+        "Oil refined of the refinery Esmeraldas",
         fontname="Times New Roman",
         size=20,
         fontweight="bold",
     )
     plt.xticks([2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020])
     st.pyplot(fig1)
-    st.caption("*Producción Refinería Shushufindi (2010-2020).*")
+    st.caption("*Producción Refinería Esmeraldas (2010-2020).*")
 
     # GRAFICO BARRAS EMICIONES CO2 SHUSHUFINDI
-    st.header("Emisiones de CO2 producidas en la Refinería Shushufindi 2010-2020.")
+    st.header("Emisiones de CO2 producidas en la Refinería Esmeraldas 2010-2020.")
     st.markdown(
-        """Todo proceso industrial genera emisiones de CO2, en la refinería Shushufinfi se pudo cuantificar estas 
+        """Todo proceso industrial genera emisiones de CO2, en la refinería Esmeraldas se pudo cuantificar estas 
         emisiones provenientes de la producción dentro de la planta en unidades de Toneladas (Ton), las cuales se 
         presentan a continuación:"""
     )
@@ -455,7 +455,7 @@ if options == "Refineries data":
     ax.set_xlabel("Year", fontsize=14)
     ax.set_ylabel(r"$CO_{2}$ emissions (Ton)", fontsize=14)
     ax.set_title(
-        r"$CO_{2}$ emissions of the refinery Sushufindi",
+        r"$CO_{2}$ emissions of the refinery Esmeraldas",
         fontname="Times New Roman",
         size=20,
         fontweight="bold",
@@ -463,7 +463,7 @@ if options == "Refineries data":
     plt.xticks([2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020])
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     st.pyplot(fig2)
-    st.caption("*Emisiones de CO2 emitidas en la Refinería Shushufinfi (2010-2020).*")
+    st.caption("*Emisiones de CO2 emitidas en la Refinería Esmeraldas (2010-2020).*")
 
     # GRAFICO DE BARRAS DE COMPARATIVA ENTRE LOS BARRILES REFINADOS Y EL CO2 QUE EMITEN
     st.header(
