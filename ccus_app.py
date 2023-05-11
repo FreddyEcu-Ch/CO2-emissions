@@ -1429,5 +1429,5 @@ elif options == "Upload File":
 
 
 st.markdown("***Autores:***")
-st.markdown("*Kevin Fernand Real Delgado | Petroleum Engineer*")
+st.markdown("*Kevin Fernandoo Real Delgado | Petroleum Engineer*")
 st.markdown("*M.Sc. Freddy Carrión Maldonado | Petroleum Engineer*")
