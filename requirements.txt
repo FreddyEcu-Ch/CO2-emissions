@@ -6,3 +6,4 @@ pillow==9.2.0
 seaborn==0.11.2
 plotly==5.11.0
 sqlalchemy==1.4.40
+altair==4.2.0
