@@ -1428,5 +1428,5 @@ elif options == "Upload File":
         st.plotly_chart(fig)
 
 
-st.markdown("***Autores:***")
+st.markdown("***Autor:***")
 st.markdown("*Kevin Fernando Real Delgado | Petroleum Engineer*")
