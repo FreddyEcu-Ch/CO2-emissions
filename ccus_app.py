@@ -67,7 +67,7 @@ if options == "Home":
         liberar CO2. (Rubén et al., 2021) """
     )
     st.markdown(
-        """ Para reducir las emisiones globales de CO2; la captura, uso y almacenamiento de carbono (CCUS)
+        """ Para rducir las emisiones globales de CO2; la captura, uso y almacenamiento de carbono (CCUS)
          se ha convertido en una posible estrategia complementaria. Por un lado, el CO2 queda atrapado, reduciendo
           su papel en el cambio climático. El plan CCUS consta de cuatro fases: recolección, transporte, almacenamiento
            y uso. """
